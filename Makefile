@@ -18,6 +18,9 @@ TEST_MODULES = \
 
 TEST_TARGET = testRunner
 
+SMLSHARPLIB_MODULES = \
+	/GetOpt
+
 SMLSHARP = smlsharp
 SMLSHARP_FLAGS = -O2
 
@@ -27,9 +30,12 @@ objects := $(sources:.sml=.o)
 
 test_sources := $(addprefix test/, $(TEST_MODULES:=.sml))
 test_objects := $(test_sources:.sml=.o)
+
+libs := $(addprefix lib/smlsharp-lib/,$(SMLSHARPLIB_MODULES:=.sml))
+lib_objects := $(libs:.sml=.o)
 # ------------------------------------------------------------
 
-$(TARGET): $(objects)
+$(TARGET): $(objects)  lib/smlsharp-lib/GetOpt.o
 	$(SMLSHARP) $(SMLSHARP_FLAGS) -o $@ src/Main.smi
 
 $(TEST_TARGET): $(objects) $(test_objects)
@@ -50,9 +56,9 @@ check: $(TEST_TARGET)
 	./$(TEST_TARGET)
 
 clean:
-	rm -rf $(TARGET) src/*.o test/*.o
+	rm -rf $(TARGET) src/*.o test/*.o lib/smlsharp-lib/*.o
 
 depend:
-	$(SMLSHARP) -MM $(sources) $(test_sources) > .depend
+	$(SMLSHARP) -MM $(sources) $(test_sources) $(libs) > .depend
 -include .depend
 
