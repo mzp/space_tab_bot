@@ -1,0 +1,20 @@
+# Space Tab bot
+
+![TabSpacesBoth](https://raw.github.com/mzp/space_tab_bot/master/misc/TabsSpacesBoth.png)
+
+## Overview
+This is Github bot to detect file containing spaces and tabs, and send issue.
+
+## Prerequires
+
+ * [SML# 2.0.0 or greater](http://www.pllab.riec.tohoku.ac.jp/smlsharp/)
+
+## How to build/use
+
+(TBD)
+
+## Authors
+
+ * [@mzp](https://twitter.com/mzp/)
+ * [@dico_leque](https://twitter.com/dico_leque/)
+
