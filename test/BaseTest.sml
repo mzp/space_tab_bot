@@ -11,7 +11,7 @@ structure BaseTest = struct
      assertEqual  "Thanks for All the Fish" (Base.id "Thanks for All the Fish"))
 
   fun suite _ = Test.labelTests [
-    ("id test", id_test),
+    ("id test", id_test)
   ]
 end
 
