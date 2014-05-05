@@ -7,6 +7,7 @@ structure Base = struct
   fun op $ (f, x) = f x
   fun op |> (x, f) = f x
   fun undef () = raise Undefine
+  fun puts str = (print str; print "\n")
 
   fun strip str =
     Substring.full str

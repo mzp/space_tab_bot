@@ -9,6 +9,7 @@ structure Base = struct
   val |>  : ('a * ('a -> 'b)) -> 'b
   val id  : 'a -> 'a
   val undef : unit -> 'a
+  val puts  : string -> unit
 
   (* strip prefix/suffix-whitespace *)
   val strip : string -> string
