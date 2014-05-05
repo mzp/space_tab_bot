@@ -1,3 +1,5 @@
+infix 0 |>
+
 structure Base = struct
   exception Undefine
 
@@ -5,4 +7,10 @@ structure Base = struct
   fun op $ (f, x) = f x
   fun op |> (x, f) = f x
   fun undef () = raise Undefine
+
+  fun strip str =
+    Substring.full str
+    |> Substring.dropl Char.isSpace
+    |> Substring.dropr Char.isSpace
+    |> Substring.string
 end
