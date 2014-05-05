@@ -2,7 +2,8 @@ open Base
 
 val suites = SMLUnit.Test.TestList [
   BaseTest.suite (),
-  PathnameTest.suite ()
+  PathnameTest.suite (),
+  SettingTest.suite ()
 ]
 
 val () =

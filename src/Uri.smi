@@ -1,3 +1,8 @@
+_require "./Base.smi"
+
 structure Uri = struct
   type t (= string)
+
+  val fromString : string -> t
+  val toString   : t -> string
 end

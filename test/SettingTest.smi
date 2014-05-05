@@ -1,0 +1,12 @@
+(* This file is auto generated. See misc/genTestSmi *)
+_require "basis.smi"
+_require "smlunit-lib.smi"
+_require "../src/Base.smi"
+_require "../src/Pathname.smi"
+_require "../src/Uri.smi"
+_require "../src/Setting.smi"
+
+structure SettingTest =
+struct
+  val suite : unit -> SMLUnit.Test.test
+end

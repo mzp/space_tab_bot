@@ -1,3 +1,5 @@
+_require "basis.smi"
+_require "./Base.smi"
 _require "./Pathname.smi"
 _require "./Uri.smi"
 
