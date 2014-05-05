@@ -9,4 +9,4 @@ build:
           code: make check
     after-steps:
       - mzp/http-notify:
-        url: $DASHBOZU_URL
+          url: $DASHBOZU_URL
