@@ -16,4 +16,11 @@ structure Base = struct
     |> Substring.dropl Char.isSpace
     |> Substring.dropr Char.isSpace
     |> Substring.string
+
+  fun protectx v f cleanup =
+      let
+        val res = f v
+      in
+        (cleanup v; res)
+      end handle e => (cleanup v; raise e)
 end

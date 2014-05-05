@@ -15,4 +15,6 @@ structure Base = struct
 
   (* strip prefix/suffix-whitespace *)
   val strip : string -> string
+
+  val protectx : 'a -> ('a -> 'b) -> ('a -> unit) -> 'b
 end

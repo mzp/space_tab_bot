@@ -4,6 +4,8 @@ MODULES = \
  	Uri \
  	Pathname \
 	Github \
+	Curl \
+	Http \
  	Setting \
  	Detector
 
@@ -22,7 +24,7 @@ LIB_MODULES = \
 	smlsharp-lib/GetOpt
 
 SMLSHARP = smlsharp
-SMLSHARP_FLAGS = -O2
+SMLSHARP_FLAGS = -O2 -lcurl
 
 # ------------------------------------------------------------
 sources := $(addprefix src/,$(MODULES:=.sml))
