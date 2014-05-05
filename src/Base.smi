@@ -10,7 +10,7 @@ structure Base = struct
   val id  : 'a -> 'a
   val undef : unit -> 'a
   val puts  : string -> unit
-  val curry : ('a * 'b) -> 'c -> 'a -> 'b -> 'c
+  val curry : ('a * 'b -> 'c) -> 'a -> 'b -> 'c
   val uncurry : ('a -> 'b -> 'c) -> 'a * 'b -> 'c
 
   (* strip prefix/suffix-whitespace *)
