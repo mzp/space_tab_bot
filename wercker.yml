@@ -1,0 +1,9 @@
+box: mzp/smlsharp-box@0.0.1
+build:
+    steps:
+      - script:
+          name: Build executable
+          code: make
+      - script:
+          name: Run unit tests
+          code: make check
