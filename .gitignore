@@ -1,3 +1,4 @@
 *.o
+*.tmp
 space_tab_bot
 testRunner

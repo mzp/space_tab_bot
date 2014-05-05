@@ -11,7 +11,8 @@ TARGET = space_tab_bot
 
 TEST_MODULES = \
 	Main \
-	BaseTest
+	BaseTest \
+	PathnameTest
 
 TEST_TARGET = testRunner
 

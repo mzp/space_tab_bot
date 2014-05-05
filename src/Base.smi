@@ -1,7 +1,10 @@
 infix 0 $ |>
 
 structure Base = struct
+  exception Undefine
+
   val $   : (('a -> 'b) * 'a) -> 'b
   val |>  : ('a * ('a -> 'b)) -> 'b
   val id  : 'a -> 'a
+  val undef : unit -> 'a
 end

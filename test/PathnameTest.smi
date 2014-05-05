@@ -2,9 +2,9 @@
 _require "basis.smi"
 _require "smlunit-lib.smi"
 _require "../src/Base.smi"
-_require "../src/Base.smi"
+_require "../src/Pathname.smi"
 
-structure BaseTest =
+structure PathnameTest =
 struct
   val suite : unit -> SMLUnit.Test.test
 end

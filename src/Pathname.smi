@@ -1,6 +1,13 @@
+_require "basis.smi"
 _require "./Base.smi"
 
 structure Pathname = struct
-  type t (= string)
+  type t (= boxed)
+  (** create Pathname object from Filesystem path *)
+  val fromPath   : string -> t
+
+  (** create Pathname object from String (for debug) *)
   val fromString : string -> t
+
+  val openIn     : (TextIO.instream -> 'a) -> t -> 'a
 end
