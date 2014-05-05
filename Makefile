@@ -13,7 +13,8 @@ TEST_MODULES = \
 	Main \
 	BaseTest \
 	PathnameTest \
-	SettingTest
+	SettingTest \
+	DetectorTest
 
 TEST_TARGET = testRunner
 
