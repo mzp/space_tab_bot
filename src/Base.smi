@@ -1,4 +1,7 @@
+infix 0 $ |>
+
 structure Base = struct
-  val id   : 'a -> 'a
-  val zip  : 'a list -> 'b list -> ('a * 'b) list
+  val $   : (('a -> 'b) * 'a) -> 'b
+  val |>  : ('a * ('a -> 'b)) -> 'b
+  val id  : 'a -> 'a
 end
