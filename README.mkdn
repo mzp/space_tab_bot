@@ -2,6 +2,8 @@
 
 ![TabSpacesBoth](https://raw.github.com/mzp/space_tab_bot/master/misc/TabsSpacesBoth.png)
 
+[![wercker status](https://app.wercker.com/status/e0d065fa51e4b9b0710cd0b85a286436/m/ "wercker status")](https://app.wercker.com/project/bykey/e0d065fa51e4b9b0710cd0b85a286436)
+
 ## Overview
 This is Github bot to detect file containing spaces and tabs, and send issue.
 

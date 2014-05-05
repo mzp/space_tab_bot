@@ -1,4 +1,4 @@
-box: mzp/smlsharp-box@0.0.1
+box: mzp/smlsharp-box@1.0.0
 build:
     steps:
       - script:
@@ -7,3 +7,6 @@ build:
       - script:
           name: Run unit tests
           code: make check
+    after-steps:
+      - mzp/http-notify:
+        url: $DASHBOZU_URL
