@@ -1,0 +1,28 @@
+#!/bin/sh
+# ============================================================
+# Summary:
+#  Simple smi file generator from sml test file.
+#
+# Usage:
+#     ./genTestSmi FooTest.sml
+# ============================================================
+
+for sml in $@; do
+  suite=$(basename $sml .sml).smi
+  module=$(basename $sml Test.sml)
+  echo "$module => $suite"
+
+  cat <<END > $suite
+(* This file is auto generated. See misc/genTestSmi *)
+_require "basis.smi"
+_require "smlunit-lib.smi"
+_require "../src/${module}.smi"
+
+structure ${module}Test =
+struct
+  val suite : unit -> SMLUnit.Test.test
+end
+END
+
+  chmod a-w $suite
+done
