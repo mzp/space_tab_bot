@@ -9,5 +9,9 @@ structure Pathname = struct
   (** create Pathname object from String (for debug) *)
   val fromString : string -> t
 
+  val toString   : t -> string
+
   val openIn     : (TextIO.instream -> 'a) -> t -> 'a
+
+  val traverse   : (t -> 'a option) -> t -> 'a list
 end

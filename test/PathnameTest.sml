@@ -22,8 +22,20 @@ structure PathnameTest = struct
     |> Assert.assertEqualString "foo\nbar"
   end
 
+  fun traverseTest () =
+  let
+    val files =
+      Pathname.traverse (fn x => SOME x) (Pathname.fromPath ".")
+      |> List.map Pathname.toString
+  in
+    (Assert.assertTrue $ List.exists (fn s => s = "./README.mkdn") files;
+     Assert.assertTrue $ List.exists (fn s => s = "./.git/config") files)
+  end
+
+
   fun suite _ = Test.labelTests [
     ("fromString", fromStringTest),
-    ("fromPath"  , fromPathTest)
+    ("fromPath"  , fromPathTest),
+    ("traverse"  , traverseTest)
   ]
 end
