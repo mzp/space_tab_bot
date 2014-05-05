@@ -9,9 +9,16 @@ This is Github bot to detect file containing spaces and tabs, and send issue.
 
  * [SML# 2.0.0 or greater](http://www.pllab.riec.tohoku.ac.jp/smlsharp/)
 
-## How to build/use
+## How to build
 
-(TBD)
+    $ make depend
+    $ make
+    # Run unit test
+    $ make check
+
+## Usage
+
+    $ ./tab_space_bot
 
 ## Authors
 

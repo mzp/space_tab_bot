@@ -1,0 +1,16 @@
+src/Github.o: src/Github.sml src/Github.smi src/Base.smi src/Pathname.smi \
+ src/Uri.smi src/Github.smi
+src/Main.o: src/Main.sml src/Main.smi src/Base.smi src/Pathname.smi \
+ src/Uri.smi src/Setting.smi src/Github.smi src/Detector.smi src/Main.smi
+src/Uri.o: src/Uri.sml src/Uri.smi src/Uri.smi
+src/Pathname.o: src/Pathname.sml src/Pathname.smi src/Base.smi \
+ src/Pathname.smi
+src/Setting.o: src/Setting.sml src/Setting.smi src/Base.smi src/Pathname.smi \
+ src/Uri.smi src/Setting.smi
+src/Detector.o: src/Detector.sml src/Detector.smi src/Base.smi \
+ src/Pathname.smi src/Detector.smi
+src/Base.o: src/Base.sml src/Base.smi src/Base.smi
+test/Main.o: test/Main.sml test/Main.smi src/Base.smi test/BaseTest.smi \
+ test/Main.smi
+test/BaseTest.o: test/BaseTest.sml test/BaseTest.smi src/Base.smi \
+ test/BaseTest.smi
