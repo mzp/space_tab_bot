@@ -1,0 +1,9 @@
+_require "basis.smi"
+_require "./Pathname.smi"
+_require "./Uri.smi"
+
+structure Github =
+struct
+  val clone : Uri.t -> Pathname.t
+  val postIssue: Uri.t -> string -> unit
+end

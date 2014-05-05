@@ -1,0 +1,6 @@
+_require "./Pathname.smi"
+_require "./Uri.smi"
+
+structure Setting = struct
+  val readFromFile : Pathname.t -> Uri.t list
+end

@@ -1,0 +1,4 @@
+structure Base = struct
+  val id   : 'a -> 'a
+  val zip  : 'a list -> 'b list -> ('a * 'b) list
+end

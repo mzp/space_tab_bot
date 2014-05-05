@@ -1,0 +1,6 @@
+_require "./Base.smi"
+
+structure Pathname = struct
+  type t (= string)
+  val fromString : string -> t
+end

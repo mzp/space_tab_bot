@@ -1,0 +1,5 @@
+_require "./Pathname.smi"
+
+structure Detector = struct
+  val detect : Pathname.t -> Pathname.t list
+end
