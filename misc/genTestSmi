@@ -16,6 +16,7 @@ for sml in $@; do
 (* This file is auto generated. See misc/genTestSmi *)
 _require "basis.smi"
 _require "smlunit-lib.smi"
+_require "../src/Base.smi"
 _require "../src/${module}.smi"
 
 structure ${module}Test =
