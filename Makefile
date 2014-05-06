@@ -18,7 +18,7 @@ TEST_MODULES = \
 
 TEST_TARGET = testRunner
 
-SMLSHARPLIB_MODULES = \
+LIB_MODULES = \
 	smlsharp-lib/GetOpt
 
 SMLSHARP = smlsharp
@@ -31,7 +31,7 @@ objects := $(sources:.sml=.o)
 test_sources := $(addprefix test/, $(TEST_MODULES:=.sml))
 test_objects := $(test_sources:.sml=.o)
 
-lib_sources := $(addprefix lib/,$(SMLSHARPLIB_MODULES:=.sml))
+lib_sources := $(addprefix lib/,$(LIB_MODULES:=.sml))
 lib_objects := $(lib_sources:.sml=.o)
 # ------------------------------------------------------------
 
