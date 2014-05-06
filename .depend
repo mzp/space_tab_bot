@@ -1,5 +1,6 @@
 src/Main.o: src/Main.sml src/Main.smi src/Base.smi src/Pathname.smi \
- src/Uri.smi src/Setting.smi src/Github.smi src/Detector.smi src/Main.smi
+ src/Uri.smi src/Setting.smi src/Github.smi src/Detector.smi \
+ lib/smlsharp-lib/GetOpt.smi src/Main.smi
 src/Base.o: src/Base.sml src/Base.smi src/Base.smi
 src/Uri.o: src/Uri.sml src/Uri.smi src/Base.smi src/Uri.smi
 src/Pathname.o: src/Pathname.sml src/Pathname.smi src/Base.smi \
@@ -21,3 +22,5 @@ test/SettingTest.o: test/SettingTest.sml test/SettingTest.smi src/Base.smi \
  src/Pathname.smi src/Uri.smi src/Setting.smi test/SettingTest.smi
 test/DetectorTest.o: test/DetectorTest.sml test/DetectorTest.smi src/Base.smi \
  src/Pathname.smi src/Detector.smi test/DetectorTest.smi
+lib/smlsharp-lib/GetOpt.o: lib/smlsharp-lib//GetOpt.sml \
+ lib/smlsharp-lib/GetOpt.smi lib/smlsharp-lib/GetOpt.smi
