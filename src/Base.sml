@@ -16,4 +16,5 @@ structure Base = struct
     |> Substring.dropl Char.isSpace
     |> Substring.dropr Char.isSpace
     |> Substring.string
+
 end

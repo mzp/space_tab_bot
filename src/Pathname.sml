@@ -67,4 +67,13 @@ struct
       walk path
     end
 
+  fun expandPath input =
+    (case String.sub (input, 0) of
+         #"~" =>
+         (case OS.Process.getEnv "HOME" of
+              NONE => input
+            | SOME home => home ^ String.substring (input, 1, size input - 1))
+       | _ => input)
+    handle Subscript => input (* empty string case *)
+
 end

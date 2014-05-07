@@ -30,4 +30,3 @@ structure BaseTest = struct
     ("strip test", strip_test)
   ]
 end
-
