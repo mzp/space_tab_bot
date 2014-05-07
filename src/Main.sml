@@ -20,9 +20,9 @@ fun printHelp () =
     val helpMessage =
       "Usage: " ^ CommandLine.name () ^ " [options]\n\
       \Options:\n\
-      \  --help              show help\n\
-      \  --version           show version\n\
-      \  --config=<filepath> specify config file path\n"
+      \ -h, --help           show help\n\
+      \ -v, --version        show version\n\
+      \ --config=<filepath>  specify config file path\n"
   in
     print helpMessage
   end
@@ -37,7 +37,9 @@ fun report (url, files) =
 
 val options =
   [
+    GO.SHORT (#"h", GO.NOARG Help),
     GO.DLONG ("help", GO.NOARG Help),
+    GO.SHORT (#"v", GO.NOARG Version),
     GO.DLONG ("version", GO.NOARG Version),
     GO.DLONG ("config", GO.REQUIRED ConfigFilePath)
   ]
