@@ -15,6 +15,4 @@ structure Base = struct
 
   (* strip prefix/suffix-whitespace *)
   val strip : string -> string
-  (* expand path including "~" *)
-  val expandPath : string -> string
 end

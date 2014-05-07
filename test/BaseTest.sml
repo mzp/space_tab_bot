@@ -24,20 +24,9 @@ structure BaseTest = struct
      Assert.assertEqualString "foo" (strip " foo ");
      Assert.assertEqualString "lazy dog" (strip "lazy dog"))
 
-  fun expandPath_test () =
-    let
-      val full = "/home/hoge/fuga.sml"
-      val home = "~/fuga.sml"
-    in
-      (Assert.assertEqualString full (expandPath full);
-       Assert.assertFalse (home = expandPath home))
-    end
-
   fun suite _ = Test.labelTests [
     ("id test", id_test),
     ("curry_uncurry_test", curry_uncurry_test),
-    ("strip test", strip_test),
-    ("expandPath test", expandPath_test)
+    ("strip test", strip_test)
   ]
 end
-
