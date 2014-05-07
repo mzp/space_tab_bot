@@ -42,7 +42,8 @@ structure PathnameTest = struct
        Assert.assertEqualString
          (home^"/fuga.sml") (Pathname.expandPath "~/fuga.sml");
        Assert.assertEqualString
-         (home^"/piyo/~/buyo.sml") (Pathname.expandPath "~/piyo/~/buyo.sml"))
+         (home^"/piyo/~/buyo.sml") (Pathname.expandPath "~/piyo/~/buyo.sml");
+       Assert.assertEqualString "" (Pathname.expandPath ""))
     end
 
   fun suite _ = Test.labelTests [
