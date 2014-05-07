@@ -1,0 +1,109 @@
+_require "basis.smi"
+_require "ffi.smi"
+
+structure Jansson = struct
+  type t (= ptr)
+  type json_iter (= ptr)
+
+  type size_t = int
+
+  datatype json_type
+    = Object
+    | Array
+    | String
+    | Integer
+    | Real
+    | True
+    | False
+    | Null
+
+  datatype encodingOption
+    = JSON_INDENT of int
+    | JSON_COMPACT
+    | JSON_ENSURE_ASCII
+    | JSON_SORT_KEYS
+    | JSON_PRESERVE_ORDER
+    | JSON_ENCODE_ANY
+    | JSON_ESCAPE_SLASH
+    | JSON_REAL_PRECISION of int
+
+  datatype decodingOption
+    = JSON_REJECT_DUPLICATES
+    | JSON_DISABLE_EOF_CHECK
+    | JSON_DECODE_ANY
+    | JSON_DECODE_INT_AS_REAL
+    | JSON_ALLOW_NUL
+
+  type errorInfo =
+       { line     : int
+       , column   : int
+       , position : int
+       , source   : string
+       , text     : string
+       }
+
+  exception jsonError of errorInfo
+
+  exception janssonError of string
+
+  val typeof : t -> json_type
+
+  val object : unit -> t
+  val array : unit -> t
+  val string : string -> t
+  val integer : int -> t
+  val real : real -> t
+  val true_ : unit -> t
+  val false_ : unit -> t
+  val boolean : bool -> t
+  val null : unit -> t
+
+  val equal : (t * t) -> bool
+
+  val copy : t -> t
+  val deep_copy : t -> t
+
+  val incref : t -> t
+  val decref : t -> unit
+
+  val object_size : t -> int
+  val object_get : (t * string) -> t option
+  val object_set : (t * string * t) -> unit
+  val object_set_new : (t * string * t) -> unit
+  val object_del : (t * string) -> unit
+  val object_clear : t -> unit
+  val object_update : (t * t) -> unit
+  val object_update_existing : (t * t) -> unit
+  val object_update_missing : (t * t) -> unit
+  val object_foreach : (string * t -> unit) -> t -> unit
+
+  val array_size : t -> size_t
+  val array_get : (t * size_t) -> t
+  val array_set : (t * size_t * t) -> unit
+  val array_set_new : (t * size_t * t) -> unit
+  val array_append : (t * t) -> unit
+  val array_append_new : (t * t) -> unit
+  val array_insert : (t * size_t * t) -> unit
+  val array_insert_new : (t * size_t * t) -> unit
+  val array_remove : (t * size_t) -> unit
+  val array_clear : t -> unit
+  val array_extend : (t * t) -> unit
+  val array_foreach : (t -> unit) -> t -> unit
+  val array_foreachi : (int * t -> unit) -> t -> unit
+
+  val string_value : t -> string
+  val string_set : (t * string) -> unit
+
+  val integer_value : t -> int
+  val integer_set : (t * int) -> unit
+
+  val real_value : t -> real
+  val real_set : (t * real) -> unit
+
+  val number_value : t -> real
+
+  val loads : string -> decodingOption list -> t
+  val load_file : string -> decodingOption list -> t
+
+  val dumps : t -> encodingOption list -> string
+end
