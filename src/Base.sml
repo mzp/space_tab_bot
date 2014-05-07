@@ -1,4 +1,4 @@
-infix 0 |>
+infix 0 $ |>
 
 structure Base = struct
   exception Undefine
@@ -16,4 +16,13 @@ structure Base = struct
     |> Substring.dropl Char.isSpace
     |> Substring.dropr Char.isSpace
     |> Substring.string
+
+  fun expandPath input =
+    let
+      (* Assume existing $HOME *)
+      fun homeExpand #"~" = valOf $ OS.Process.getEnv "HOME"
+        | homeExpand c = str c
+    in
+      String.translate homeExpand input
+    end
 end
