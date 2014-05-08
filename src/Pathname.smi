@@ -23,4 +23,6 @@ structure Pathname = struct
   val map : (string -> string) -> t -> t
 
   val chdir : (t -> 'a) -> string -> 'a
+
+  val fnmatch : string -> t -> bool
 end

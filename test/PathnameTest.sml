@@ -71,6 +71,14 @@ structure PathnameTest = struct
     |> Pathname.toString
     |> Assert.assertEqualString "/tmp/bar/baz"
 
+  fun fnmatch_test () =
+    ( Assert.assertTrue  $ Pathname.fnmatch "foo.c" $ Pathname.fromPath "foo.c"
+    ; Assert.assertTrue  $ Pathname.fnmatch "*.c"   $ Pathname.fromPath "/path/to/x.c"
+    ; Assert.assertTrue  $ Pathname.fnmatch "foo/*" $ Pathname.fromPath "foo/bar/baz.c"
+    ; Assert.assertTrue  $ Pathname.fnmatch "*/bar/*" $ Pathname.fromPath "foo/bar/baz.c"
+    ; Assert.assertTrue  $ Pathname.fnmatch "*.c"   $ Pathname.fromPath "foo.c"
+    ; Assert.assertFalse $ Pathname.fnmatch "*.c"   $ Pathname.fromPath "foo.cpp")
+
   fun suite _ = Test.labelTests [
     ("fromString", fromStringTest),
     ("fromPath"  , fromPathTest),
@@ -78,6 +86,7 @@ structure PathnameTest = struct
     ("chdir"     , chdir_test),
     ("expandPath(home) test", expandPath_home_test),
     ("expandPath(cwd) test", expandPath_cwd_test),
-    ("mapTest test", map_test)
+    ("mapTest test", map_test),
+    ("fnmatch test", fnmatch_test)
   ]
 end

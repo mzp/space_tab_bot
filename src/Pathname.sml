@@ -95,4 +95,9 @@ struct
       protectx (fromPath dir) f finnally
     end
 
+  val prim_fnmatch = _import "fnmatch" : (string, string, int) -> int
+  val prim_puts = _import "puts" : string -> int
+
+  fun fnmatch pat path =
+    0 = prim_fnmatch (pat, toString path, 0)
 end
