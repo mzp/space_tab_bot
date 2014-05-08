@@ -19,6 +19,10 @@ structure Curl = struct
     | CURLOPT_PORT of int
     | CURLOPT_USERPWD of string
     | CURLOPT_WRITEFUNCTION of word8 vector -> int
+    | CURLOPT_POSTFIELDS of string
+    | CURLOPT_USERAGENT of string
+    | CURLOPT_POST
+    | CURLOPT_POSTFIELDSIZE of int
 
   fun toCurlCode 0 = CURLE_OK
     | toCurlCode n = CURLE_Error n
@@ -79,6 +83,10 @@ structure Curl = struct
       | optCode0 (CURLOPT_PORT _) = (LONG, 3)
       | optCode0 (CURLOPT_USERPWD _) = (OBJECTPOINT, 5)
       | optCode0 (CURLOPT_WRITEFUNCTION _) = (FUNCTIONPOINT, 11)
+      | optCode0 (CURLOPT_POSTFIELDS _) = (OBJECTPOINT, 15)
+      | optCode0 (CURLOPT_USERAGENT _) = (OBJECTPOINT, 18)
+      | optCode0 (CURLOPT_POST) = (LONG, 47)
+      | optCode0 (CURLOPT_POSTFIELDSIZE _) = (LONG,60)
     fun optCode opt = op + (optCode0 opt)
     open Base
   in
@@ -95,6 +103,14 @@ structure Curl = struct
         in
           toCurlCode (curl_easy_set_write_function_opt (curl, optCode opt, g))
         end
+      | easy_setopt curl (opt as CURLOPT_POSTFIELDS str) =
+        toCurlCode (curl_easy_set_string_opt (curl, optCode opt, str))
+      | easy_setopt curl (opt as CURLOPT_USERAGENT str) =
+        toCurlCode (curl_easy_set_string_opt (curl, optCode opt, str))
+      | easy_setopt curl (opt as CURLOPT_POST) =
+        toCurlCode (curl_easy_set_int_opt (curl, optCode opt, 1))
+      | easy_setopt curl (opt as CURLOPT_POSTFIELDSIZE n) =
+        toCurlCode (curl_easy_set_int_opt (curl, optCode opt, n))
   end
 end
 

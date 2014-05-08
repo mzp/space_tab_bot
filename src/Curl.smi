@@ -9,11 +9,16 @@ structure Curl = struct
     (** All other error codes go here, for now *)
     | CURLE_Error of int
 
+  (** All options is ordered by its value *)
   datatype curlOption
     = CURLOPT_URL of string
     | CURLOPT_PORT of int
     | CURLOPT_USERPWD of string
     | CURLOPT_WRITEFUNCTION of word8 vector -> int
+    | CURLOPT_POSTFIELDS of string
+    | CURLOPT_USERAGENT of string
+    | CURLOPT_POST
+    | CURLOPT_POSTFIELDSIZE of int
 
   datatype globalOption
     = CURL_GLOBAL_SSL
