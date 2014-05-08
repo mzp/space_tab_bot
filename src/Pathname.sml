@@ -39,14 +39,14 @@ struct
     Base.protectx (OS.FileSys.openDir str) (loop []) OS.FileSys.closeDir
   end
 
-  fun traverse f (StringIO _) = []
-    | traverse f (File path) =
+  fun traverse _ _ (StringIO _) = []
+    | traverse isTraverse f (File path) =
     let
       fun f' x =
         f (fromPath x) |> opt
       fun walk path =
         if OS.FileSys.isDir path then
-          listFiles path
+          (if isTraverse (fromPath path) then listFiles path else [])
           |> List.map walk
           |> List.concat
         else

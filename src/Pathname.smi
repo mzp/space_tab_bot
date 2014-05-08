@@ -13,7 +13,7 @@ structure Pathname = struct
 
   val openIn     : (TextIO.instream -> 'a) -> t -> 'a
 
-  val traverse   : (t -> 'a option) -> t -> 'a list
+  val traverse   : (t -> bool) -> (t -> 'a option) -> t -> 'a list
 
   (* expand path begining "~" *)
   val expandPath : string -> string

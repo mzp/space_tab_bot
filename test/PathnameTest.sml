@@ -39,11 +39,12 @@ structure PathnameTest = struct
   fun traverseTest () =
   let
     val files =
-      Pathname.traverse (fn x => SOME x) (Pathname.fromPath ".")
+      Pathname.fromPath "."
+      |> Pathname.traverse (not o Pathname.fnmatch "*/.git") SOME
       |> List.map Pathname.toString
   in
-    (Assert.assertTrue $ List.exists (fn s => s = "./README.mkdn") files;
-     Assert.assertTrue $ List.exists (fn s => s = "./.git/config") files)
+    (Assert.assertTrue  $ List.exists (fn s => s = "./README.mkdn") files;
+     Assert.assertFalse $ List.exists (fn s => s = "./.git/config") files)
   end
 
   fun expandPath_home_test () =

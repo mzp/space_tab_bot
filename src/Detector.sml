@@ -1,6 +1,11 @@
 structure Detector = struct
   open Base
 
+  val ignoreDirectories =
+    ["*/.git"]
+  val ignoreFiles =
+    ["*.png"]
+
   fun isTab str =
     String.isSubstring "\t" str
 
@@ -35,11 +40,16 @@ structure Detector = struct
     Pathname.openIn (loop { isTab=false, isSpace=false }) path
   end
 
+  fun isNotMatch pats path =
+    List.all (not o flip Pathname.fnmatch path) pats
+
   fun detect path =
     let
       val path' = Pathname.map Pathname.expandPath path
+      fun f x =
+        isNotMatch ignoreFiles x andalso isDetect x
     in
-      Pathname.traverse (Option.filter isDetect) path'
+      Pathname.traverse (isNotMatch ignoreDirectories) (Option.filter f) path'
       |> List.map (Pathname.map (fn s=>
           ( OS.Path.mkRelative { path=s, relativeTo=Pathname.toString path'})))
     end
