@@ -7,7 +7,8 @@ MODULES = \
 	Curl \
 	Http \
  	Setting \
- 	Detector
+ 	Detector \
+ 	Message
 
 TARGET = space_tab_bot
 

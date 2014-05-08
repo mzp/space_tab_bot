@@ -18,5 +18,6 @@ structure Github = struct
         raise (CommandError status)
     end
 
-  fun postIssue url text = ()
+  fun postIssue url text =
+    puts text
 end
