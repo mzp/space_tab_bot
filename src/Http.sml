@@ -16,6 +16,7 @@ structure Http = struct
         fun write w8s =
             ( rs := w8s :: !rs
             ; Vector.length w8s )
+        (* FIXME: error handling *)
         val _ = Curl.global_init [Curl.CURL_GLOBAL_DEFAULT]
         val curl = Curl.easy_init ()
         val _ = Curl.easy_setopt curl (Curl.CURLOPT_URL url)
