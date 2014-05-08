@@ -1,4 +1,4 @@
-box: mzp/smlsharp-box@1.0.0
+box: mzp/smlsharp-box@1.1.2
 build:
     steps:
       - script:
