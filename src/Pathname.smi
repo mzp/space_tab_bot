@@ -17,4 +17,6 @@ structure Pathname = struct
 
   (* expand path begining "~" *)
   val expandPath : string -> string
+
+  val tmpDir : unit -> t
 end

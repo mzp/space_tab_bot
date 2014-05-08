@@ -64,4 +64,16 @@ struct
        | _ => input)
     handle Subscript => input (* empty string case *)
 
+  fun tmpDir () =
+    let
+      val tmp =
+        OS.FileSys.tmpName ()
+      val () =
+        OS.FileSys.remove tmp
+      val () =
+        OS.FileSys.mkDir tmp
+    in
+      fromPath tmp
+    end
+
 end
