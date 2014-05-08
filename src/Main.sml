@@ -68,9 +68,12 @@ val () =
     | PrintVersion => printVersion ()
     | Main pathOpt =>
       let
+        val configPath =
+          Option.getOpt (pathOpt, Pathname.expandPath "~/.space_tab_bot")
         val urls =
-            Setting.readFromFile $ Pathname.fromString "~/.space_tab_bot"
-        val bannedFiles = List.map (Detector.detect o Github.clone) urls
+          Setting.readFromFile $ Pathname.fromPath configPath
+        val bannedFiles =
+          List.map (Detector.detect o Github.clone) urls
       in
         List.app report $ ListPair.zip (urls,bannedFiles)
       end
