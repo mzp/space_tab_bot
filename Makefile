@@ -24,7 +24,8 @@ LIB_MODULES = \
 	smlsharp-lib/GetOpt
 
 SMLSHARP = smlsharp
-SMLSHARP_FLAGS = -O2 -lcurl
+SMLSHARP_CFLAGS = -O2
+SMLSHARP_LDFLAGS = -lcurl
 
 # ------------------------------------------------------------
 sources := $(addprefix src/,$(MODULES:=.sml))
@@ -38,16 +39,16 @@ lib_objects := $(lib_sources:.sml=.o)
 # ------------------------------------------------------------
 
 $(TARGET): $(objects)  $(lib_objects)
-	$(SMLSHARP) $(SMLSHARP_FLAGS) -o $@ src/Main.smi
+	$(SMLSHARP) $(SMLSHARP_LDFLAGS) -o $@ src/Main.smi
 
 $(TEST_TARGET): $(objects) $(test_objects)
-	$(SMLSHARP) $(SMLSHARP_FLAGS) -o $@ test/Main.smi
+	$(SMLSHARP) $(SMLSHARP_LDFLAGS) -o $@ test/Main.smi
 
 # ------------------------------------------------------------
 #  Build rules
 # ------------------------------------------------------------
 %.o: %.sml
-	$(SMLSHARP) $(SMLSHARP_FLAGS) -c -o $@ $<
+	$(SMLSHARP) $(SMLSHARP_CFLAGS) -c -o $@ $<
 
 # ------------------------------------------------------------
 #  Phony target
