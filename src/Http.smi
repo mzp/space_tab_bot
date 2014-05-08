@@ -1,0 +1,14 @@
+_require "basis.smi"
+_require "./Base.smi"
+_require "./Uri.smi"
+_require "./Curl.smi"
+
+structure Http = struct
+  type httpOptions =
+       { username : string option
+       , password : string option
+       }
+
+  val httpGet : httpOptions -> string -> word8 vector
+  val emptyOptions : httpOptions
+end

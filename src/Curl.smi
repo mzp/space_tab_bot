@@ -1,0 +1,33 @@
+_require "basis.smi"
+_require "ffi.smi"
+_require "./Base.smi"
+
+structure Curl = struct
+  type t (= ptr)
+  datatype code
+    = CURLE_OK
+    (** All other error codes go here, for now *)
+    | CURLE_Error of int
+
+  datatype curlOption
+    = CURLOPT_URL of string
+    | CURLOPT_PORT of int
+    | CURLOPT_USERPWD of string
+    | CURLOPT_WRITEFUNCTION of word8 vector -> int
+
+  datatype globalOption
+    = CURL_GLOBAL_SSL
+    | CURL_GLOBAL_WIN32
+    | CURL_GLOBAL_ALL
+    | CURL_GLOBAL_NOTHING
+    | CURL_GLOBAL_DEFAULT
+
+  val global_init : globalOption list -> code
+
+  val easy_init : unit -> t
+  val easy_setopt : t -> curlOption -> code
+  val easy_perform : t -> code
+  val easy_cleanup : t -> unit
+end
+
+
