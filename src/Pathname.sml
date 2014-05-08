@@ -17,7 +17,7 @@ struct
 
   fun openIn f t =
   let
-    fun open_ (File path) = TextIO.openIn path
+    fun open_ (File path)    = TextIO.openIn path
       | open_ (StringIO str) = TextIO.openString str
   in
     Base.protectx (open_ t) f TextIO.closeIn
