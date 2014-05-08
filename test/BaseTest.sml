@@ -25,6 +25,19 @@ structure BaseTest = struct
        Assert.assertEqualInt ((uncurry (curry (op +))) (1,2)) (1 + 2))
     end
 
+  fun tee_test () =
+    Assert.assertEqualInt 42 $ tee (fn n => Assert.assertEqualInt 42 n) 42
+
+  fun const_test () =
+    Assert.assertEqualInt 42 (const 42 "Thanks for All the Fish")
+
+  fun flip_test () =
+    let
+      fun f x y = x - y
+    in
+      Assert.assertEqualInt 5 (flip f 5 10)
+    end
+
   fun strip_test () =
     (Assert.assertEqualString "foo" (strip "foo");
      Assert.assertEqualString "foo" (strip "foo ");
@@ -51,6 +64,9 @@ structure BaseTest = struct
     ("id test", id_test),
     ("apply test", apply_test),
     ("curry_uncurry_test", curry_uncurry_test),
+    ("tee test", tee_test),
+    ("const test", const_test),
+    ("flip test", flip_test),
     ("strip test", strip_test),
     ("takeWhile test", takeWhile_test),
     ("dropWhile test", dropWhile_test),
