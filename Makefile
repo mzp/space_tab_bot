@@ -12,7 +12,9 @@ MODULES = \
 	Jansson \
 	Json
 
-C_MODULES = janssonext
+C_MODULES = \
+	janssonext \
+	uriparserext
 
 TARGET = space_tab_bot
 
@@ -28,11 +30,11 @@ TEST_MODULES = \
 TEST_TARGET = testRunner
 
 LIB_MODULES = \
-	smlsharp-lib/GetOpt
+	smlsharp-lib/GetOpt \
 
 SMLSHARP = smlsharp
 SMLSHARP_CFLAGS = -O2
-SMLSHARP_LDFLAGS = -lcurl -ljansson
+SMLSHARP_LDFLAGS = -lcurl -ljansson -luriparser
 
 CFLAGS += -m32
 

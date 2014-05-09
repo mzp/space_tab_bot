@@ -1,11 +1,11 @@
-_require "basis/main/toplevel.smi"
-_require "basis/main/String.smi"
 _require "basis/main/Int.smi"
-_require "./Base.smi"
+_require "basis/main/String.smi"
+_require "basis/main/toplevel.smi"
+_require "../../src/Base.smi"
 
-structure Uri =
+structure UriParser =
 struct
-  type t =
+  type uri =
        {
          scheme : string,
          userInfo : string option,
@@ -14,7 +14,6 @@ struct
          path : string option,
          query : string option,
          frag : string option
-       }
-  val fromString : string -> t option
-  val toString   : t -> string
+       } option
+  val parse : string -> uri
 end
