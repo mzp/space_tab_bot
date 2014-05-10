@@ -409,6 +409,66 @@ structure JanssonTest = struct
             Jansson.array_size x
             |> Assert.assertEqualInt 0)
 
+  val dummyErrorInfo =
+       { line = 0
+       , column = 0
+       , position = 0
+       , source = ""
+       , text = ""
+       }
+
+  fun loads_dup_test () =
+      let
+        val str = "{\"a\": 1, \"a\": 2}"
+      in
+        assertFailWithExceptionEquallyNamed
+          (Jansson.decodingError dummyErrorInfo)
+          (fn () => Jansson.loads str [Jansson.JSON_REJECT_DUPLICATES])
+      ; ephemeral (Jansson.loads str [])
+                  (assertHasType Jansson.Object)
+      end
+
+  fun loads_any_test () =
+      let
+        val str = "null"
+      in
+        assertFailWithExceptionEquallyNamed
+          (Jansson.decodingError dummyErrorInfo)
+          (fn () => Jansson.loads str [])
+      ; ephemeral (Jansson.loads str [Jansson.JSON_DECODE_ANY])
+                  (assertHasType Jansson.Null)
+      end
+
+  fun loads_eof_test () =
+      let
+        val str = "{} null"
+      in
+        assertFailWithExceptionEquallyNamed
+          (Jansson.decodingError dummyErrorInfo)
+          (fn () => Jansson.loads str [])
+      ; ephemeral (Jansson.loads str [Jansson.JSON_DISABLE_EOF_CHECK])
+                  (assertHasType Jansson.Object)
+      end
+
+  fun loads_int_as_real_test () =
+      let
+        val str = "[1]"
+      in
+        ephemeral (Jansson.loads str [Jansson.JSON_DISABLE_EOF_CHECK])
+                  (fn x =>
+                      assertHasType Jansson.Integer (Jansson.array_get (x, 0)))
+      ; ephemeral (Jansson.loads str [Jansson.JSON_DECODE_INT_AS_REAL])
+                  (fn x =>
+                      assertHasType Jansson.Real (Jansson.array_get (x, 0)))
+      end
+
+  fun loads_mix_test () =
+      ephemeral
+        (Jansson.loads "1 true" [ Jansson.JSON_DECODE_ANY
+                                , Jansson.JSON_DISABLE_EOF_CHECK
+                                , Jansson.JSON_DECODE_INT_AS_REAL])
+        (assertHasType Jansson.Real)
+
   fun suite _ = Test.labelTests [
     ("object test", object_test),
     ("array test", array_test),
@@ -437,7 +497,12 @@ structure JanssonTest = struct
     ("object_update_existing test", object_update_existing_test),
     ("object_update_missing test", object_update_missing_test),
     ("object_foreach test", object_foreach_test),
-    ("loads test", loads_test)
+    ("loads test", loads_test),
+    ("loads dup test", loads_dup_test),
+    ("loads any test", loads_any_test),
+    ("loads eof test", loads_eof_test),
+    ("loads int_as_real test", loads_int_as_real_test),
+    ("loads mix test", loads_mix_test)
   ]
 end
 
