@@ -402,6 +402,217 @@ structure JanssonTest = struct
                 (!r)
             end)
 
+  fun array_size_test () =
+      ephemeral
+        (Jansson.array ())
+        (fn x =>
+            Assert.assertEqualInt 0 (Jansson.array_size x))
+
+  fun array_append_test () =
+      ephemeral2
+        (Jansson.array (), Jansson.null ())
+        (fn (x, v) =>
+            let
+              val n = Jansson.array_size x
+              val () = Jansson.array_append (x, v)
+            in
+              Assert.assertEqualInt (n + 1) (Jansson.array_size x)
+            end)
+
+  fun array_append_new_test () =
+      ephemeral
+        (Jansson.array ())
+        (fn x =>
+            let
+              val n = Jansson.array_size x
+              val () = Jansson.array_append_new (x, Jansson.null ())
+            in
+              Assert.assertEqualInt (n + 1) (Jansson.array_size x)
+            end)
+
+  fun array_get_test () =
+      ephemeral2
+        (Jansson.array (), Jansson.null ())
+        (fn (x, v) =>
+            let in
+              assertFailWithExceptionEquallyNamed
+                Subscript
+                (fn () => Jansson.array_get (x, 0))
+            ; Jansson.array_append (x, v)
+            ; assertJanssonEqual v (Jansson.array_get (x, 0))
+            end)
+
+  fun array_set_test () =
+      ephemeral3
+        (Jansson.array (), Jansson.true_ (), Jansson.false_ ())
+        (fn (x, v1, v2) =>
+            let in
+              assertFailWithExceptionEquallyNamed
+                (Jansson.janssonError "")
+                (fn () => Jansson.array_set (x, 0, v1))
+            ; Jansson.array_append (x, v1)
+            ; Jansson.array_set (x, 0, v2)
+            ; assertJanssonEqual v2 (Jansson.array_get (x, 0))
+            end)
+
+  fun array_set_new_test () =
+      ephemeral
+        (Jansson.array ())
+        (fn x =>
+            let
+              val v1 = Jansson.true_ ()
+              val v2 = Jansson.false_ ()
+            in
+              assertFailWithExceptionEquallyNamed
+                (Jansson.janssonError "")
+                (fn () => Jansson.array_set_new (x, 0, v1))
+            ; Jansson.array_append_new (x, v1)
+            ; Jansson.array_set_new (x, 0, v2)
+            ; assertJanssonEqual v2 (Jansson.array_get (x, 0))
+            end)
+
+  fun array_insert_test () =
+      ephemeral3
+        (Jansson.array (), Jansson.true_ (), Jansson.false_ ())
+        (fn (x, v1, v2) =>
+            let
+              val () = Jansson.array_append (x, v1)
+              val n = Jansson.array_size x
+              val () = Jansson.array_insert (x, 0, v2)
+              val m = Jansson.array_size x
+            in
+              Assert.assertEqualInt (n + 1) m
+            ; assertJanssonEqual v2 (Jansson.array_get (x, 0))
+            ; assertJanssonEqual v1 (Jansson.array_get (x, 1))
+            ; Jansson.array_insert (x, 1, v2)
+            ; Assert.assertEqualInt (m + 1) (Jansson.array_size x)
+            ; assertJanssonEqual v2 (Jansson.array_get (x, 0))
+            ; assertJanssonEqual v2 (Jansson.array_get (x, 1))
+            ; assertJanssonEqual v1 (Jansson.array_get (x, 2))
+            end)
+
+  fun array_insert_new_test () =
+      ephemeral3
+        (Jansson.array (), Jansson.true_ (), Jansson.false_ ())
+        (fn (x, v1, v2) =>
+            let
+              val () = Jansson.array_append (x, v1)
+              val n = Jansson.array_size x
+              val () = Jansson.array_insert_new (x, 0, Jansson.copy v2)
+              val m = Jansson.array_size x
+            in
+              Assert.assertEqualInt (n + 1) m
+            ; assertJanssonEqual v2 (Jansson.array_get (x, 0))
+            ; assertJanssonEqual v1 (Jansson.array_get (x, 1))
+            ; Jansson.array_insert_new (x, 1, Jansson.copy v2)
+            ; Assert.assertEqualInt (m + 1) (Jansson.array_size x)
+            ; assertJanssonEqual v2 (Jansson.array_get (x, 0))
+            ; assertJanssonEqual v2 (Jansson.array_get (x, 1))
+            ; assertJanssonEqual v1 (Jansson.array_get (x, 2))
+            end)
+
+  fun array_remove_test () =
+      ephemeral4
+        (Jansson.array (), Jansson.true_ (), Jansson.false_ (), Jansson.null ())
+        (fn (x, v1, v2, v3) =>
+            let
+              val () = assertFailWithExceptionEquallyNamed
+                         (Jansson.janssonError "")
+                         (fn () => Jansson.array_remove (x, 0))
+              val () = Jansson.array_append (x, v1)
+              val () = Jansson.array_append (x, v2)
+              val () = Jansson.array_append (x, v3)
+              val m = Jansson.array_size x
+              val () = assertFailWithExceptionEquallyNamed
+                         (Jansson.janssonError "")
+                         (fn () => Jansson.array_remove (x, m))
+              val () = Jansson.array_remove (x, 0)
+              val () = assertJanssonEqual v2 (Jansson.array_get (x, 0))
+              val () = Assert.assertEqualInt (m - 1) (Jansson.array_size x)
+              val n = Jansson.array_size x
+            in
+              Jansson.array_remove (x, n - 1)
+            ; Assert.assertEqualInt (n - 1) (Jansson.array_size x)
+            ; assertJanssonEqual v2
+                                 (Jansson.array_get
+                                    (x, (Jansson.array_size x) - 1))
+            end)
+
+  fun array_clear_test () =
+      ephemeral
+        (Jansson.array ())
+        (fn x =>
+            let
+              val n = 3
+              val vs = List.tabulate (n, fn _ => Jansson.null ())
+            in
+              List.app (fn v => Jansson.array_append_new (x, v)) vs
+            ; Assert.assertEqualInt n (Jansson.array_size x)
+            ; Jansson.array_clear x
+            ; Assert.assertEqualInt 0 (Jansson.array_size x)
+            end)
+
+  fun array_extend_test () =
+      ephemeral3
+        (Jansson.array (), Jansson.array (), Jansson.array ())
+        (fn (x, y, z) =>
+            let
+              open Base
+              fun appendNulls arr n =
+                  List.tabulate (n, fn _ => Jansson.null ())
+                  |> List.app (fn v => Jansson.array_append_new (arr, v))
+              val (n, m, l) = (3, 1, 7)
+              val () = appendNulls x n
+              val () = appendNulls y m
+              val () = appendNulls z l
+            in
+              Assert.assertEqualInt n (Jansson.array_size x)
+            ; Assert.assertEqualInt m (Jansson.array_size y)
+            ; Assert.assertEqualInt l (Jansson.array_size z)
+            ; Jansson.array_extend (x, y)
+            ; Assert.assertEqualInt m (Jansson.array_size y)
+            ; Assert.assertEqualInt (n + m) (Jansson.array_size x)
+            ; Jansson.array_extend (x, z)
+            ; Assert.assertEqualInt l (Jansson.array_size z)
+            ; Assert.assertEqualInt (n + m + l) (Jansson.array_size x)
+            end)
+
+  fun array_foreach_test () =
+      ephemeral
+        (Jansson.array ())
+        (fn x =>
+            let
+              val arr = Array.tabulate (10, fn n => Jansson.integer n)
+            in
+              Array.app (fn v => Jansson.array_append_new (x, v)) arr
+            ; Jansson.array_foreach
+                (fn v =>
+                    assertJanssonEqual v
+                                       (Array.sub
+                                          (arr, Jansson.integer_value v)))
+                x
+            end)
+
+  fun array_foreachi_test () =
+      ephemeral
+        (Jansson.array ())
+        (fn x =>
+            let
+              open Base
+              fun appendInts arr n =
+                  List.tabulate (n, fn m => Jansson.integer m)
+                  |> List.app (fn v => Jansson.array_append_new (arr, v))
+              val () = appendInts x 10
+              val arr = Array.array (Jansson.array_size x, Jansson.null ())
+            in
+              Jansson.array_foreachi
+                (fn (i, v) => Array.update (arr, i, v))
+                x
+            ; Array.appi
+                (fn (i, v) =>
+                    assertJanssonEqual (Jansson.array_get (x, i)) v)
+                arr
+            end)
 
   fun loads_test () =
       ephemeral
@@ -571,6 +782,19 @@ structure JanssonTest = struct
     ("object_update_existing test", object_update_existing_test),
     ("object_update_missing test", object_update_missing_test),
     ("object_foreach test", object_foreach_test),
+    ("array_size test", array_size_test),
+    ("array_append test", array_append_test),
+    ("array_append_new test", array_append_new_test),
+    ("array_get test", array_get_test),
+    ("array_set test", array_set_test),
+    ("array_set_new test", array_set_new_test),
+    ("array_insert test", array_insert_test),
+    ("array_insert_new test", array_insert_new_test),
+    ("array_remove test", array_remove_test),
+    ("array_clear test", array_clear_test),
+    ("array_extend test", array_extend_test),
+    ("array_foreach test", array_foreach_test),
+    ("array_foreachi test", array_foreachi_test),
     ("loads test", loads_test),
     ("loads dup test", loads_dup_test),
     ("loads any test", loads_any_test),
