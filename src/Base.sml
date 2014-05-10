@@ -10,6 +10,7 @@ structure Base = struct
   fun puts str = (print str; print "\n")
   fun curry f x y = f (x,y)
   fun uncurry f (x,y) = f x y
+  fun flip f x y = f y x
 
   fun strip str =
     Substring.full str
