@@ -42,7 +42,9 @@ structure Jansson = struct
        , text     : string
        }
 
-  exception jsonError of errorInfo
+  exception encodingError of errorInfo
+
+  exception decodingError of errorInfo
 
   exception janssonError of string
 

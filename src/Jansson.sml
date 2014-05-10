@@ -44,7 +44,9 @@ structure Jansson = struct
        , text     : string
        }
 
-  exception jsonError of errorInfo
+  exception encodingError of errorInfo
+
+  exception decodingError of errorInfo
 
   exception janssonError of string
 
@@ -96,9 +98,9 @@ structure Jansson = struct
       else
         ()
 
-  fun tryParse n =
+  fun tryEncDec err n =
       if Pointer.isNull n then
-        raise (jsonError (currentError ()))
+        raise (err (currentError ()))
       else
         n
 
@@ -417,7 +419,8 @@ structure Jansson = struct
 
   (* decoding *)
   fun loads input opts =
-      tryParse
+      tryEncDec
+        decodingError
         (_ffiapply
            _import "json_loads"
            (input : string,
@@ -426,7 +429,8 @@ structure Jansson = struct
            ) : t)
 
   fun load_file path opts =
-      tryParse
+      tryEncDec
+        decodingError
         (_ffiapply
            _import "json_load_file"
            (path : string,
@@ -437,7 +441,8 @@ structure Jansson = struct
   (* encoding *)
   fun dumps json opts =
       Pointer.importString
-        (tryParse
+        (tryEncDec
+           encodingError
            (_ffiapply
               _import "json_load_file"
               (json : t,
