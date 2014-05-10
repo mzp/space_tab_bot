@@ -33,7 +33,7 @@ fun report (url, files) =
   if List.null files then
     ()
   else
-    Github.postIssue url "You have space-tab-mixed file"
+    Github.postIssue url $ Message.issues files
 
 val options =
   [

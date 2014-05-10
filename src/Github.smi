@@ -1,9 +1,12 @@
 _require "basis.smi"
+_require "./Base.smi"
 _require "./Pathname.smi"
 _require "./Uri.smi"
+_require "./Http.smi"
 
-structure Github =
-struct
+structure Github = struct
+  exception CommandError of OS.Process.status
+
   val clone : Uri.t -> Pathname.t
   val postIssue: Uri.t -> string -> unit
 end

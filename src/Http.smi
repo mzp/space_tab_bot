@@ -10,5 +10,6 @@ structure Http = struct
        }
 
   val httpGet : httpOptions -> string -> word8 vector
+  val httpPost : httpOptions -> string -> string -> word8 vector
   val emptyOptions : httpOptions
 end

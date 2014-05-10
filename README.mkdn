@@ -10,6 +10,7 @@ This is Github bot to detect file containing spaces and tabs, and send issue.
 ## Prerequires
 
  * [SML# 2.0.0 or greater](http://www.pllab.riec.tohoku.ac.jp/smlsharp/)
+ * libcurl
 
 ## How to build
 
@@ -20,10 +21,22 @@ This is Github bot to detect file containing spaces and tabs, and send issue.
 
 ## Usage
 
-    $ ./tab_space_bot
+Write Github URL at `~/.space_tab_bot` like below:
+
+    https://github.com/mzp/space_tab_bot
+
+Setup Github account:
+
+    $ export GITHUB_USERNAME="your_name"
+    $ export GITHUB_PASSWORD="your password"
+
+Run:
+
+    $ ./space_tab_bot
 
 ## Authors
 
  * [@mzp](https://twitter.com/mzp/)
  * [@dico_leque](https://twitter.com/dico_leque/)
+ * [@keita44_f4](https://twitter.com/keita44_f4/)
 

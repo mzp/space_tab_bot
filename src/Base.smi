@@ -4,6 +4,7 @@ infix 0 $ |>
 
 structure Base = struct
   exception Undefine
+  exception Failure of string
 
   val $   : (('a -> 'b) * 'a) -> 'b
   val |>  : ('a * ('a -> 'b)) -> 'b
@@ -13,8 +14,14 @@ structure Base = struct
   val curry : ('a * 'b -> 'c) -> 'a -> 'b -> 'c
   val uncurry : ('a -> 'b -> 'c) -> 'a * 'b -> 'c
 
+  val failwith : string -> 'a
+
   (* strip prefix/suffix-whitespace *)
   val strip : string -> string
 
   val protectx : 'a -> ('a -> 'b) -> ('a -> unit) -> 'b
+
+  val span : ('a -> bool) -> 'a list -> ('a list * 'a list)
+  val takeWhile : ('a -> bool) -> 'a list -> 'a list
+  val dropWhile : ('a -> bool) -> 'a list -> 'a list
 end

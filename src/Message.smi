@@ -1,0 +1,7 @@
+_require "basis.smi"
+_require "./Base.smi"
+_require "./Pathname.smi"
+
+structure Message = struct
+  val issues : Pathname.t list -> string
+end
