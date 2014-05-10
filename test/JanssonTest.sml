@@ -1,3 +1,4 @@
+(* -*- coding: utf-8 -*- *)
 structure JanssonTest = struct
   structure Test = SMLUnit.Test
   structure Assert = SMLUnit.Assert
@@ -469,6 +470,79 @@ structure JanssonTest = struct
                                 , Jansson.JSON_DECODE_INT_AS_REAL])
         (assertHasType Jansson.Real)
 
+  fun dumps_indent_test () =
+      ephemeral
+        (Jansson.array ())
+        (fn x =>
+            ( Jansson.array_append_new (x, Jansson.integer 1)
+            ; Jansson.array_append_new (x, Jansson.integer 2)
+            ; Assert.assertEqualString "[1, 2]"
+                                       (Jansson.dumps x [])
+            ; Assert.assertEqualString "[\n  1,\n  2\n]"
+                                       (Jansson.dumps x [Jansson.JSON_INDENT 2])
+            ; Assert.assertEqualString "[\n   1,\n   2\n]"
+                                       (Jansson.dumps x [Jansson.JSON_INDENT 3])
+            ))
+
+  fun dumps_compact_test () =
+      ephemeral
+        (Jansson.array ())
+        (fn x =>
+            ( Jansson.array_append_new (x, Jansson.integer 1)
+            ; Jansson.array_append_new (x, Jansson.integer 2)
+            ; Assert.assertEqualString "[1, 2]"
+                                       (Jansson.dumps x [])
+            ; Assert.assertEqualString "[1,2]"
+                                       (Jansson.dumps x [Jansson.JSON_COMPACT])
+            ))
+
+  fun dumps_any_test () =
+      ephemeral
+        (Jansson.null ())
+        (fn x =>
+            ( assertFailWithExceptionEquallyNamed
+                (Jansson.encodingError dummyErrorInfo)
+                (fn () => Jansson.dumps x [])
+            ; Assert.assertEqualString
+                "null"
+                (Jansson.dumps x [Jansson.JSON_ENCODE_ANY])
+        ))
+
+  fun dumps_escape_slash_test () =
+      ephemeral
+        (Jansson.array ())
+        (fn x =>
+            ( Jansson.array_append_new (x, Jansson.string "a/b")
+            ; Assert.assertEqualString "[\"a/b\"]"
+                                       (Jansson.dumps x [])
+            ; Assert.assertEqualString
+                "[\"a\\/b\"]"
+                (Jansson.dumps x [Jansson.JSON_ESCAPE_SLASH])
+        ))
+
+  fun dumps_ensure_ascii_test () =
+      ephemeral
+        (Jansson.array ())
+        (fn x =>
+            ( Jansson.array_append_new (x, Jansson.string "♥")
+            ; Assert.assertEqualString "[\"♥\"]"
+                                       (Jansson.dumps x [])
+            ; Assert.assertEqualString
+                "[\"\\u2665\"]"
+                (Jansson.dumps x [Jansson.JSON_ENSURE_ASCII])
+        ))
+
+
+  fun dumps_mix_test () =
+      ephemeral
+        (Jansson.string "♥/")
+        (fn x =>
+             Assert.assertEqualString
+                "\"\\u2665\\/\""
+                (Jansson.dumps x [ Jansson.JSON_ENSURE_ASCII
+                                 , Jansson.JSON_ENCODE_ANY
+                                 , Jansson.JSON_ESCAPE_SLASH ]))
+
   fun suite _ = Test.labelTests [
     ("object test", object_test),
     ("array test", array_test),
@@ -502,7 +576,12 @@ structure JanssonTest = struct
     ("loads any test", loads_any_test),
     ("loads eof test", loads_eof_test),
     ("loads int_as_real test", loads_int_as_real_test),
-    ("loads mix test", loads_mix_test)
+    ("loads mix test", loads_mix_test),
+    ("dumps indent test", dumps_indent_test),
+    ("dumps any test", dumps_any_test),
+    ("dumps escape_slash test", dumps_escape_slash_test),
+    ("dumps ensure_ascii test", dumps_ensure_ascii_test),
+    ("dumps mix test", dumps_mix_test)
   ]
 end
 
