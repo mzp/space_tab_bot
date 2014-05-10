@@ -19,9 +19,8 @@ structure Github = struct
     end
 
   fun word_to_string xs =
-    (Vector.map (Char.toString o Char.chr o Word8.toInt) xs
-     |> Vector.app print
-     ; puts "")
+    Byte.bytesToString xs
+    |> puts
 
   fun times 0 _ x = x
     | times n f x = f (times (n-1) f x)
