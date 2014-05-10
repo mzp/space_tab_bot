@@ -7,6 +7,7 @@ MODULES = \
 	Curl \
 	Http \
 	Jansson \
+	Json \
  	Setting \
  	Detector
 
@@ -18,7 +19,8 @@ TEST_MODULES = \
 	PathnameTest \
 	SettingTest \
 	DetectorTest \
-	JanssonTest
+	JanssonTest \
+	JsonTest
 
 TEST_TARGET = testRunner
 

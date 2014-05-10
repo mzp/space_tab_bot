@@ -5,7 +5,8 @@ val suites = SMLUnit.Test.TestList [
   PathnameTest.suite (),
   SettingTest.suite (),
   DetectorTest.suite (),
-  JanssonTest.suite ()
+  JanssonTest.suite (),
+  JsonTest.suite ()
 ]
 
 val () =
