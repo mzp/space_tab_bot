@@ -7,6 +7,15 @@ structure BaseTest = struct
     (Assert.assertEqualInt 42 (id 42);
      Assert.assertEqualString  "Thanks for All the Fish" (Base.id "Thanks for All the Fish"))
 
+  fun apply_test () =
+    let
+      fun f x = x +1
+      fun g x = 2 * x
+      fun h x = 3 * x
+    in
+      Assert.assertEqualInt (f (g (h 10))) (f $ g $ h 10)
+    end
+
   fun curry_uncurry_test () =
     let
       fun plus x y = x + y
@@ -40,6 +49,7 @@ structure BaseTest = struct
 
   fun suite _ = Test.labelTests [
     ("id test", id_test),
+    ("apply test", apply_test),
     ("curry_uncurry_test", curry_uncurry_test),
     ("strip test", strip_test),
     ("takeWhile test", takeWhile_test),

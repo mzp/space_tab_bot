@@ -1,6 +1,7 @@
 _require "basis.smi"
 
-infix 0 $ |>
+infix 0 |>
+infixr 0 $
 
 structure Base = struct
   exception Undefine
