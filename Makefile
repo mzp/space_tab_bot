@@ -1,14 +1,14 @@
 MODULES = \
 	Main \
 	Base \
- 	Uri \
- 	Pathname \
+	Uri \
+	Pathname \
 	Github \
 	Curl \
 	Http \
- 	Setting \
- 	Detector \
- 	Message
+	Setting \
+	Detector \
+	Message
 
 TARGET = space_tab_bot
 
