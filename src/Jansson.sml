@@ -444,7 +444,7 @@ structure Jansson = struct
         (tryEncDec
            encodingError
            (_ffiapply
-              _import "json_load_file"
+              _import "json_dumps"
               (json : t,
                wordOfEncodingOptions opts : flag_t,
                error_t_handle () : json_error_t
