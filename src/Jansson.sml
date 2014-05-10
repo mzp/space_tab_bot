@@ -66,7 +66,7 @@ structure Jansson = struct
 
   fun currentErrorSource () =
       Pointer.importString
-        (_ffiapply _import "stb_json_error_t_position" () : char ptr)
+        (_ffiapply _import "stb_json_error_t_source" () : char ptr)
 
   fun currentErrorText () =
       Pointer.importString
