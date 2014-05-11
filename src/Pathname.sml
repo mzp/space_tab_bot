@@ -55,12 +55,17 @@ struct
       walk path
     end
 
+  fun ltrim str =
+    String.substring (str, 1, size str - 1)
+
   fun expandPath input =
     (case String.sub (input, 0) of
          #"~" =>
          (case OS.Process.getEnv "HOME" of
               NONE => input
-            | SOME home => home ^ String.substring (input, 1, size input - 1))
+            | SOME home => home ^ ltrim input)
+       | #"." =>
+           OS.FileSys.getDir () ^ ltrim input
        | _ => input)
     handle Subscript => input (* empty string case *)
 
@@ -74,6 +79,20 @@ struct
         OS.FileSys.mkDir tmp
     in
       fromPath tmp
+    end
+
+  fun map f (File path)  = File (f path)
+    | map f (x as StringIO _) = x
+
+  fun chdir f dir =
+    let
+      val cwd = OS.FileSys.getDir ()
+      fun finnally _ =
+        OS.FileSys.chDir cwd
+      val () =
+        OS.FileSys.chDir dir
+    in
+      protectx (fromPath dir) f finnally
     end
 
 end

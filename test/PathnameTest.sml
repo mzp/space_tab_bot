@@ -22,6 +22,20 @@ structure PathnameTest = struct
     |> Assert.assertEqualString "foo\nbar"
   end
 
+  fun chdir_test () =
+    let
+      val cwd =
+        OS.FileSys.getDir ()
+      val () =
+        Pathname.chdir (fn p => Assert.assertEqualString "/tmp" $ Pathname.toString p) "/tmp"
+      val () =
+        Pathname.chdir (fn _ => Assert.assertEqualString "/tmp" $ OS.FileSys.getDir()) "/tmp"
+      val () =
+        Assert.assertEqualString cwd (OS.FileSys.getDir ())
+    in
+      ()
+    end
+
   fun traverseTest () =
   let
     val files =
@@ -32,7 +46,7 @@ structure PathnameTest = struct
      Assert.assertTrue $ List.exists (fn s => s = "./.git/config") files)
   end
 
-  fun expandPath_test () =
+  fun expandPath_home_test () =
     let
       val case1 = "/home/hoge/fuga.sml"
       val home =
@@ -46,10 +60,24 @@ structure PathnameTest = struct
        Assert.assertEqualString "" (Pathname.expandPath ""))
     end
 
+  fun expandPath_cwd_test () =
+    Pathname.chdir
+      (fn _ => Assert.assertEqualString "/tmp/hoge.sml" $ Pathname.expandPath "./hoge.sml")
+      "/tmp"
+
+  fun map_test () =
+    Pathname.fromPath "/tmp/bar"
+    |> Pathname.map (fn s => s ^ "/baz")
+    |> Pathname.toString
+    |> Assert.assertEqualString "/tmp/bar/baz"
+
   fun suite _ = Test.labelTests [
     ("fromString", fromStringTest),
     ("fromPath"  , fromPathTest),
     ("traverse"  , traverseTest),
-    ("expandPath test", expandPath_test)
+    ("chdir"     , chdir_test),
+    ("expandPath(home) test", expandPath_home_test),
+    ("expandPath(cwd) test", expandPath_cwd_test),
+    ("mapTest test", map_test)
   ]
 end

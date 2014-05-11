@@ -19,4 +19,8 @@ structure Pathname = struct
   val expandPath : string -> string
 
   val tmpDir : unit -> t
+
+  val map : (string -> string) -> t -> t
+
+  val chdir : (t -> 'a) -> string -> 'a
 end
