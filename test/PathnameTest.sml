@@ -39,11 +39,12 @@ structure PathnameTest = struct
   fun traverseTest () =
   let
     val files =
-      Pathname.traverse (fn x => SOME x) (Pathname.fromPath ".")
+      Pathname.fromPath "."
+      |> Pathname.traverse (not o Pathname.fnmatch "*/.git") SOME
       |> List.map Pathname.toString
   in
-    (Assert.assertTrue $ List.exists (fn s => s = "./README.mkdn") files;
-     Assert.assertTrue $ List.exists (fn s => s = "./.git/config") files)
+    (Assert.assertTrue  $ List.exists (fn s => s = "./README.mkdn") files;
+     Assert.assertFalse $ List.exists (fn s => s = "./.git/config") files)
   end
 
   fun expandPath_home_test () =
@@ -71,6 +72,14 @@ structure PathnameTest = struct
     |> Pathname.toString
     |> Assert.assertEqualString "/tmp/bar/baz"
 
+  fun fnmatch_test () =
+    ( Assert.assertTrue  $ Pathname.fnmatch "foo.c" $ Pathname.fromPath "foo.c"
+    ; Assert.assertTrue  $ Pathname.fnmatch "*.c"   $ Pathname.fromPath "/path/to/x.c"
+    ; Assert.assertTrue  $ Pathname.fnmatch "foo/*" $ Pathname.fromPath "foo/bar/baz.c"
+    ; Assert.assertTrue  $ Pathname.fnmatch "*/bar/*" $ Pathname.fromPath "foo/bar/baz.c"
+    ; Assert.assertTrue  $ Pathname.fnmatch "*.c"   $ Pathname.fromPath "foo.c"
+    ; Assert.assertFalse $ Pathname.fnmatch "*.c"   $ Pathname.fromPath "foo.cpp")
+
   fun suite _ = Test.labelTests [
     ("fromString", fromStringTest),
     ("fromPath"  , fromPathTest),
@@ -78,6 +87,7 @@ structure PathnameTest = struct
     ("chdir"     , chdir_test),
     ("expandPath(home) test", expandPath_home_test),
     ("expandPath(cwd) test", expandPath_cwd_test),
-    ("mapTest test", map_test)
+    ("mapTest test", map_test),
+    ("fnmatch test", fnmatch_test)
   ]
 end

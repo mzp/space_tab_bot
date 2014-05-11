@@ -12,6 +12,8 @@ structure Base = struct
   fun curry f x y = f (x,y)
   fun uncurry f (x,y) = f x y
   fun tee f x = (f x; x)
+  fun const x _ = x
+  fun flip f x y = f y x
 
   fun failwith str = raise (Failure str)
 

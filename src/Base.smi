@@ -15,6 +15,8 @@ structure Base = struct
   val curry : ('a * 'b -> 'c) -> 'a -> 'b -> 'c
   val uncurry : ('a -> 'b -> 'c) -> 'a * 'b -> 'c
   val tee : ('a -> 'b) -> 'a -> 'a
+  val const : 'a -> 'b -> 'a
+  val flip : ('a -> 'b -> 'c) -> 'b -> 'a -> 'c
 
   val failwith : string -> 'a
 
