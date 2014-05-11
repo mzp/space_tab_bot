@@ -36,5 +36,11 @@ structure Detector = struct
   end
 
   fun detect path =
-    Pathname.traverse (Option.filter isDetect) path
+    let
+      val path' = Pathname.map Pathname.expandPath path
+    in
+      Pathname.traverse (Option.filter isDetect) path'
+      |> List.map (Pathname.map (fn s=>
+          ( OS.Path.mkRelative { path=s, relativeTo=Pathname.toString path'})))
+    end
 end

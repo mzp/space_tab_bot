@@ -1,6 +1,7 @@
 _require "basis.smi"
 
-infix 0 $ |>
+infix 0 |>
+infixr 0 $
 
 structure Base = struct
   exception Undefine
@@ -13,6 +14,7 @@ structure Base = struct
   val puts  : string -> unit
   val curry : ('a * 'b -> 'c) -> 'a -> 'b -> 'c
   val uncurry : ('a -> 'b -> 'c) -> 'a * 'b -> 'c
+  val tee : ('a -> 'b) -> 'a -> 'a
 
   val failwith : string -> 'a
 

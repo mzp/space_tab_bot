@@ -17,7 +17,7 @@ structure DetectorTest = struct
   fun detectTest () =
     Detector.detect (Pathname.fromPath "./test/test_files")
     |> List.map Pathname.toString
-    |> Assert.assertEqualStringList ["./test/test_files/Bad.sml"]
+    |> Assert.assertEqualStringList ["Bad.sml"]
 
   fun suite _ = Test.labelTests [
     ("isDetect test", isDetectTest),
