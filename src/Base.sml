@@ -11,6 +11,7 @@ structure Base = struct
   fun puts str = (print str; print "\n")
   fun curry f x y = f (x,y)
   fun uncurry f (x,y) = f x y
+  fun tee f x = (f x; x)
 
   fun failwith str = raise (Failure str)
 

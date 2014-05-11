@@ -14,6 +14,7 @@ structure Base = struct
   val puts  : string -> unit
   val curry : ('a * 'b -> 'c) -> 'a -> 'b -> 'c
   val uncurry : ('a -> 'b -> 'c) -> 'a * 'b -> 'c
+  val tee : ('a -> 'b) -> 'a -> 'a
 
   val failwith : string -> 'a
 
