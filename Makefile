@@ -11,6 +11,8 @@ MODULES = \
  	Setting \
  	Detector
 
+C_MODULES = janssonext
+
 TARGET = space_tab_bot
 
 TEST_MODULES = \
@@ -37,7 +39,7 @@ CFLAGS += -m32
 sources := $(addprefix src/,$(MODULES:=.sml))
 objects := $(sources:.sml=.o)
 
-c_sources = src/janssonext.c
+c_sources = $(addprefix src/,$(C_MODULES:=.c))
 c_objects := $(c_sources:.c=.o)
 
 test_sources := $(addprefix test/, $(TEST_MODULES:=.sml))
