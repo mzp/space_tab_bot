@@ -8,12 +8,13 @@ exception Error of string
 datatype commandLineArgs =
     Help
   | Version
+  | DryRun
   | ConfigFilePath of string
 
 datatype runmode =
     PrintHelp
   | PrintVersion
-  | Main of string option
+  | Main of string option * { dryRun : bool }
 
 fun printHelp () =
   let
@@ -22,6 +23,7 @@ fun printHelp () =
       \Options:\n\
       \ -h, --help           show help\n\
       \ -v, --version        show version\n\
+      \ -n, --dry-run        print the issues that would be posted, but do not post tem\n\
       \ --config=<filepath>  specify config file path\n"
   in
     print helpMessage
@@ -30,10 +32,10 @@ fun printHelp () =
 fun printVersion () = Base.puts "The Space Tab Bot, version 0.1"
 
 fun report (url, files) =
-  if List.null files then
-    ()
-  else
-    Github.postIssue url $ Message.issues files
+  Github.postIssue url $ Message.issues files
+
+fun dryRun (url, files) =
+  puts $ Message.issues files
 
 val options =
   [
@@ -41,13 +43,16 @@ val options =
     GO.DLONG ("help", GO.NOARG Help),
     GO.SHORT (#"v", GO.NOARG Version),
     GO.DLONG ("version", GO.NOARG Version),
+    GO.SHORT (#"n", GO.NOARG DryRun),
+    GO.DLONG ("dry-run", GO.NOARG DryRun),
     GO.DLONG ("config", GO.REQUIRED ConfigFilePath)
   ]
 
-fun setRunmode (GO.OPTION Help, Main NONE) = PrintHelp
-  | setRunmode (GO.OPTION Version, Main NONE) = PrintVersion
-  | setRunmode (GO.OPTION (ConfigFilePath path), Main NONE) = Main (SOME path)
-  | setRunmode (GO.ARG name, Main NONE) =
+fun setRunmode (GO.OPTION Help, Main (NONE, _)) = PrintHelp
+  | setRunmode (GO.OPTION Version, Main (NONE, _)) = PrintVersion
+  | setRunmode (GO.OPTION (ConfigFilePath path), Main (NONE, opt)) = Main (SOME path, opt)
+  | setRunmode (GO.OPTION DryRun, Main(path,opt)) = Main (path, opt # { dryRun = true })
+  | setRunmode (GO.ARG name, Main (NONE, _)) =
     raise Error ("invalid input `" ^ name ^ "'")
   | setRunmode _ = raise Error ("invalid multiple options")
 
@@ -61,12 +66,12 @@ val () =
                raise Error ("option `" ^ name ^ "' requires no argument")
              | GO.Unknown name =>
                raise Error ("invalid option `" ^ name ^ "'")
-    val runmode = foldl setRunmode (Main NONE) commands
+    val runmode = foldl setRunmode (Main (NONE, { dryRun = false })) commands
   in
     case runmode of
       PrintHelp => printHelp ()
     | PrintVersion => printVersion ()
-    | Main pathOpt =>
+    | Main (pathOpt, opt) =>
       let
         val configPath =
           Option.getOpt (pathOpt, Pathname.expandPath "~/.space_tab_bot")
@@ -75,7 +80,9 @@ val () =
         val bannedFiles =
           List.map (Detector.detect o Github.clone) urls
       in
-        List.app report $ ListPair.zip (urls,bannedFiles)
+        ListPair.zip (urls,bannedFiles)
+        |> List.filter (not o List.null o #2)
+        |> List.app (if #dryRun opt then dryRun else report)
       end
   end
     handle Error message =>
