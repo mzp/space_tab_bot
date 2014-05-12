@@ -3,15 +3,15 @@ structure DetectorTest = struct
   structure Assert = SMLUnit.Assert
   open Base
 
-  fun isDetectTest () =
-    (Assert.assertTrue  (Detector.isDetect (Pathname.fromString "  \t"));
-     Assert.assertFalse (Detector.isDetect (Pathname.fromString ""));
-     Assert.assertFalse (Detector.isDetect (Pathname.fromString "   "));
-     Assert.assertFalse (Detector.isDetect (Pathname.fromString "\t\t"));
-     Assert.assertTrue (Detector.isDetect (Pathname.fromString "\t  foo"));
-     Assert.assertFalse (Detector.isDetect (Pathname.fromString "  foo\tbar"));
-     Assert.assertFalse (Detector.isDetect (Pathname.fromString "  foo bar"));
-     Assert.assertTrue  (Detector.isDetect (Pathname.fromString "  foo\n\tbar"))
+  fun isDetectedTest () =
+    (Assert.assertTrue  (Detector.isDetected (Pathname.fromString "  \t"));
+     Assert.assertFalse (Detector.isDetected (Pathname.fromString ""));
+     Assert.assertFalse (Detector.isDetected (Pathname.fromString "   "));
+     Assert.assertFalse (Detector.isDetected (Pathname.fromString "\t\t"));
+     Assert.assertTrue (Detector.isDetected (Pathname.fromString "\t  foo"));
+     Assert.assertFalse (Detector.isDetected (Pathname.fromString "  foo\tbar"));
+     Assert.assertFalse (Detector.isDetected (Pathname.fromString "  foo bar"));
+     Assert.assertTrue  (Detector.isDetected (Pathname.fromString "  foo\n\tbar"))
     )
 
   fun detectTest () =
@@ -20,7 +20,7 @@ structure DetectorTest = struct
     |> Assert.assertEqualStringList ["Bad.sml"]
 
   fun suite _ = Test.labelTests [
-    ("isDetect test", isDetectTest),
+    ("isDetected test", isDetectedTest),
     ("detect test", detectTest)
   ]
 end
