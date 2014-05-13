@@ -15,5 +15,7 @@ structure Json = struct
 
   val parseString : string -> t
 
+  val parseFile : string -> t
+
   val toString : t -> string
 end

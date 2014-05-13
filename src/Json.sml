@@ -48,6 +48,13 @@ structure Json = struct
         fromJansson
         Jansson.decref
 
+  fun parseFile path =
+      (* FIXME: don't expose Jansson.decodingError *)
+      protectx
+        (Jansson.load_file path [Jansson.JSON_DECODE_ANY])
+        fromJansson
+        Jansson.decref
+
   fun toJansson True = Jansson.true_ ()
     | toJansson False = Jansson.false_ ()
     | toJansson Null = Jansson.null ()
