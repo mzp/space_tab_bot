@@ -44,7 +44,7 @@ structure Json = struct
   fun parseString s =
       (* FIXME: don't expose Jansson.decodingError *)
       protectx
-        (Jansson.loads s [])
+        (Jansson.loads s [Jansson.JSON_DECODE_ANY])
         fromJansson
         Jansson.decref
 
@@ -79,6 +79,6 @@ structure Json = struct
   fun toString v =
       (* FIXME: don't expose Jansson.encodingError *)
       protectx (toJansson v)
-               (flip Jansson.dumps [])
+               (flip Jansson.dumps [Jansson.JSON_ENCODE_ANY])
                Jansson.decref
 end
