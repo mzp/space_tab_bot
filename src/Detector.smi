@@ -3,6 +3,6 @@ _require "./Base.smi"
 _require "./Pathname.smi"
 
 structure Detector = struct
-  val isDetect : Pathname.t -> bool
+  val isDetected : Pathname.t -> bool
   val detect : Pathname.t -> Pathname.t list
 end

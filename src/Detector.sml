@@ -21,7 +21,7 @@ structure Detector = struct
   fun isBoth opt =
     #isTab opt andalso #isSpace opt
 
-  fun isDetect path =
+  fun isDetected path =
   let
     fun loop opt instream =
     let
@@ -47,7 +47,7 @@ structure Detector = struct
     let
       val path' = Pathname.map Pathname.expandPath path
       fun f x =
-        isNotMatch ignoreFiles x andalso isDetect x
+        isNotMatch ignoreFiles x andalso isDetected x
     in
       Pathname.traverse (isNotMatch ignoreDirectories) (Option.filter f) path'
       |> List.map (Pathname.map (fn s=>
