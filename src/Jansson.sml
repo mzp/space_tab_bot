@@ -1,4 +1,6 @@
 structure Jansson = struct
+  open Base
+
   type t = unit ptr
 
   type size_t = int
@@ -55,29 +57,36 @@ structure Jansson = struct
   val error_t_handle =
       _import "stb_json_error_t" : () -> json_error_t
 
-  val currentErrorLine =
-      _import "stb_json_error_t_line" : () -> int
+  val errorLine =
+      _import "stb_json_error_t_line" : json_error_t -> int
 
-  val currentErrorColumn =
-      _import "stb_json_error_t_column" : () -> int
+  val errorColumn =
+      _import "stb_json_error_t_column" : json_error_t -> int
 
-  val currentErrorPosition =
-      _import "stb_json_error_t_position" : () -> int
+  val errorPosition =
+      _import "stb_json_error_t_position" : json_error_t -> int
 
-  fun currentErrorSource () =
+  fun errorSource err =
       Pointer.importString
-        (_ffiapply _import "stb_json_error_t_source" () : char ptr)
+        (_ffiapply
+           _import "stb_json_error_t_source"
+           (err : json_error_t) : char ptr)
 
-  fun currentErrorText () =
+  fun errorText err =
       Pointer.importString
-        (_ffiapply _import "stb_json_error_t_text" () : char ptr)
+        (_ffiapply
+           _import "stb_json_error_t_text"
+           (err : json_error_t) : char ptr)
 
-  fun currentError () =
-      { line     = currentErrorLine ()
-      , column   = currentErrorColumn ()
-      , position = currentErrorPosition ()
-      , source   = currentErrorSource ()
-      , text     = currentErrorText ()
+  val free =
+      _import "free" : unit ptr -> ()
+
+  fun toErrorInfo err =
+      { line     = errorLine err
+      , column   = errorColumn err
+      , position = errorPosition err
+      , source   = errorSource err
+      , text     = errorText err
       }
 
   fun opt v =
@@ -98,11 +107,19 @@ structure Jansson = struct
       else
         ()
 
-  fun tryEncDec err n =
-      if Pointer.isNull n then
-        raise (err (currentError ()))
-      else
-        n
+  fun tryEncDec exn f =
+      protectx
+        (error_t_handle ())
+        (fn err =>
+            let
+              val n = f err
+            in
+              if Pointer.isNull n then
+                raise (exn (toErrorInfo err))
+              else
+                n
+            end)
+        free
 
   fun findIndex x ys =
       let
@@ -421,32 +438,35 @@ structure Jansson = struct
   fun loads input opts =
       tryEncDec
         decodingError
-        (_ffiapply
-           _import "json_loads"
-           (input : string,
-            wordOfDecodingOptions opts : flag_t,
-            error_t_handle () : json_error_t
-           ) : t)
+        (fn err =>
+            _ffiapply
+              _import "json_loads"
+              (input : string,
+               wordOfDecodingOptions opts : flag_t,
+               err : json_error_t
+              ) : t)
 
   fun load_file path opts =
       tryEncDec
         decodingError
-        (_ffiapply
-           _import "json_load_file"
-           (path : string,
-            wordOfDecodingOptions opts : flag_t,
-            error_t_handle () : json_error_t
-           ) : t)
+        (fn err =>
+            _ffiapply
+              _import "json_load_file"
+              (path : string,
+               wordOfDecodingOptions opts : flag_t,
+               err : json_error_t
+              ) : t)
 
   (* encoding *)
   fun dumps json opts =
       Pointer.importString
         (tryEncDec
            encodingError
-           (_ffiapply
-              _import "json_dumps"
-              (json : t,
-               wordOfEncodingOptions opts : flag_t,
-               error_t_handle () : json_error_t
-              ) : char ptr))
+           (fn err =>
+               _ffiapply
+                 _import "json_dumps"
+                 (json : t,
+                  wordOfEncodingOptions opts : flag_t,
+                  err : json_error_t
+                 ) : char ptr))
 end

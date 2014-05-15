@@ -73,34 +73,32 @@ stb_json_array_insert(json_t *array, size_t ind, json_t *value) {
   return json_array_insert(array, ind, value);
 }
 
-static json_error_t err;
-
 json_error_t *
 stb_json_error_t() {
-  return &err;
+  return (json_error_t *)malloc(sizeof(json_error_t));
 }
 
 int
-stb_json_error_t_line() {
-  return err.line;
+stb_json_error_t_line(json_error_t *err) {
+  return err->line;
 }
 
 int
-stb_json_error_t_column() {
-  return err.column;
+stb_json_error_t_column(json_error_t *err) {
+  return err->column;
 }
 
 int
-stb_json_error_t_position() {
-  return err.position;
+stb_json_error_t_position(json_error_t *err) {
+  return err->position;
 }
 
 const char *
-stb_json_error_t_source() {
-  return err.source;
+stb_json_error_t_source(json_error_t *err) {
+  return err->source;
 }
 
 const char *
-stb_json_error_t_text() {
-  return err.text;
+stb_json_error_t_text(json_error_t *err) {
+  return err->text;
 }

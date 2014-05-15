@@ -1,5 +1,6 @@
 _require "basis.smi"
 _require "ffi.smi"
+_require "./Base.smi"
 
 structure Jansson = struct
   type t (= ptr)
