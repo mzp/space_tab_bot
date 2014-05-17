@@ -54,8 +54,24 @@ structure Jansson = struct
 
   (* utils *)
   (* wrappers. `stb_' prefixed functions are defined in janssonext.c *)
-  val error_t_handle =
-      _import "stb_json_error_t" : () -> json_error_t
+  fun fatal msg =
+      let in
+        _ffiapply
+          _import "sml_fatal"
+          ( 0 : int
+          , "%s" : string
+          , msg : string) : ()
+      ; raise Fail "dummy. sml_fatal will not return"
+      end
+
+  fun tryAlloc n =
+      if Pointer.isNull n then
+        fatal "out of memory"
+      else
+        n
+
+  fun error_t_handle () =
+      tryAlloc (_ffiapply _import "stb_json_error_t" () : json_error_t)
 
   val errorLine =
       _import "stb_json_error_t_line" : json_error_t -> int
