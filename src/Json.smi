@@ -18,4 +18,13 @@ structure Json = struct
   val parseFile : string -> t
 
   val toString : t -> string
+
+  (** accessor *)
+  val bool   : t -> bool option
+  val null   : t -> unit option
+  val string : t -> string option
+  val integer: t -> int option
+  val real_  : t -> real option
+  val object : t -> (string * t) list option
+  val array  : t -> t list option
 end
