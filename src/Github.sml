@@ -27,7 +27,7 @@ structure Github = struct
 
     (* FIXME: Too much adhoc. Use URI parse module *)
   fun repos uri =
-    String.explode uri
+    String.explode (Uri.toString uri)
     |> times 3 (tl o dropWhile (fn c => c <> #"/"))
     |> String.implode
 
@@ -41,7 +41,7 @@ structure Github = struct
         | _ =>
             failwith "could not found github account information.\nPlease set 'GITHUB_USERNAME' and 'GITHUB_PASSWORD'"
       val repos =
-        repos (Uri.toString url)
+        repos url
       val apiEntryPoint =
         "https://api.github.com/repos/" ^ repos ^ "/issues"
       (* FIXME: use some JSON library *)
@@ -59,4 +59,29 @@ structure Github = struct
         apiEntryPoint json
       |> word_to_string
     end
+
+  fun issues uri =
+    let
+      val repos =
+        repos uri
+      val apiEntryPoint =
+        "https://api.github.com/repos/" ^ repos ^ "/issues"
+      fun find (key : string) (xs : (string * Json.t) list) : string option =
+        Option.mapPartial Json.string $ assoc key xs
+      val issues =
+        Http.httpGet Http.emptyOptions apiEntryPoint
+        |> Byte.bytesToString
+        |> Json.parseString
+        |> Json.array
+        |> Option.map (List.mapPartial Json.object)
+        |> Option.map (List.mapPartial (fn xs =>
+           case (find "title" xs, find "body" xs) of
+                (SOME title, SOME body) =>
+                  SOME {title=title, body=body}
+              | _ =>
+                  NONE))
+    in
+      Option.getOpt (issues, [])
+    end
+
 end
