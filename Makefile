@@ -21,6 +21,7 @@ TARGET = space_tab_bot
 TEST_MODULES = \
 	Main \
 	BaseTest \
+	UriTest \
 	PathnameTest \
 	SettingTest \
 	DetectorTest \
