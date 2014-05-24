@@ -12,13 +12,16 @@ MODULES = \
 	Jansson \
 	Json
 
-C_MODULES = janssonext
+C_MODULES = \
+	janssonext \
+	uriparserext
 
 TARGET = space_tab_bot
 
 TEST_MODULES = \
 	Main \
 	BaseTest \
+	UriTest \
 	PathnameTest \
 	SettingTest \
 	DetectorTest \
@@ -32,7 +35,7 @@ LIB_MODULES = \
 
 SMLSHARP = smlsharp
 SMLSHARP_CFLAGS = -O2
-SMLSHARP_LDFLAGS = -lcurl -ljansson
+SMLSHARP_LDFLAGS = -lcurl -ljansson -luriparser
 
 CFLAGS += -m32
 

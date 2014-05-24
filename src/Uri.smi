@@ -1,8 +1,20 @@
+_require "basis/main/toplevel.smi"
+_require "basis/main/String.smi"
+_require "basis/main/Int.smi"
 _require "./Base.smi"
 
-structure Uri = struct
-  type t (= string)
-
-  val fromString : string -> t
+structure Uri =
+struct
+  type t =
+       {
+         scheme : string,
+         userInfo : string option,
+         host : string,
+         port : int option,
+         path : string option,
+         query : string option,
+         frag : string option
+       }
+  val fromString : string -> t option
   val toString   : t -> string
 end

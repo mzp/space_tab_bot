@@ -13,7 +13,9 @@ structure Setting = struct
         if str = "" then
           loop xs instream
         else
-          loop (Uri.fromString str :: xs) instream
+          case Uri.fromString str of
+              SOME uri => loop (uri :: xs) instream
+            | NONE => loop xs instream (* ignore invalid uri *)
    end
 
   fun readFromFile path =
