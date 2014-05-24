@@ -31,7 +31,7 @@ TEST_MODULES = \
 TEST_TARGET = testRunner
 
 LIB_MODULES = \
-	smlsharp-lib/GetOpt \
+	smlsharp-lib/GetOpt
 
 SMLSHARP = smlsharp
 SMLSHARP_CFLAGS = -O2

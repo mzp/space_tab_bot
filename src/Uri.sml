@@ -1,19 +1,4 @@
-structure Uri
-            : sig
-              type t =
-                   {
-                     scheme : string,
-                     userInfo : string option,
-                     host : string,
-                     port : int option,
-                     path : string option,
-                     query : string option,
-                     frag : string option
-                   }
-              val fromString : string -> t option
-              val toString : t -> string
-            end
-=
+structure Uri =
 struct
   local
     open Base
