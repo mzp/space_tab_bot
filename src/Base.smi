@@ -1,4 +1,6 @@
-_require "basis.smi"
+_require "basis/main/toplevel.smi"
+_require "basis/main/Char.smi"
+_require "basis/main/Substring.smi"
 
 infix 0 |>
 infixr 0 $
