@@ -1,6 +1,6 @@
 _require "basis.smi"
 _require "./Base.smi"
-_require "./Jansson.smi"
+_require "../lib/libjansson/Jansson.smi"
 
 structure Json = struct
   datatype t

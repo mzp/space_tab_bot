@@ -1,7 +1,7 @@
 _require "basis.smi"
 _require "./Base.smi"
+_require "../lib/liburiparser/Uri.smi"
 _require "./Pathname.smi"
-_require "./Uri.smi"
 _require "./Http.smi"
 
 structure Github = struct

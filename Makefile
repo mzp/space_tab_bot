@@ -1,20 +1,17 @@
 MODULES = \
 	Main \
 	Base \
-	Uri \
 	Pathname \
 	Github \
-	Curl \
 	Http \
 	Setting \
 	Detector \
 	Message \
-	Jansson \
 	Json
 
 C_MODULES = \
-	janssonext \
-	uriparserext
+	libjansson/janssonext \
+	liburiparser/uriparserext
 
 TARGET = space_tab_bot
 
@@ -31,7 +28,10 @@ TEST_MODULES = \
 TEST_TARGET = testRunner
 
 LIB_MODULES = \
-	smlsharp-lib/GetOpt
+	smlsharp-lib/GetOpt \
+	libcurl/Curl \
+	liburiparser/Uri \
+	libjansson/Jansson \
 
 SMLSHARP = smlsharp
 SMLSHARP_CFLAGS = -O2
@@ -43,7 +43,7 @@ CFLAGS += -m32
 sources := $(addprefix src/,$(MODULES:=.sml))
 objects := $(sources:.sml=.o)
 
-c_sources = $(addprefix src/,$(C_MODULES:=.c))
+c_sources = $(addprefix lib/,$(C_MODULES:=.c))
 c_objects := $(c_sources:.c=.o)
 
 test_sources := $(addprefix test/, $(TEST_MODULES:=.sml))

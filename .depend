@@ -1,31 +1,48 @@
-src/Main.o: src/Main.sml src/Main.smi src/Base.smi src/Pathname.smi \
- src/Uri.smi src/Setting.smi src/Curl.smi src/Http.smi src/Github.smi \
- src/Detector.smi src/Message.smi lib/smlsharp-lib/GetOpt.smi src/Main.smi
+src/Main.o: src/Main.sml src/Main.smi src/Base.smi lib/smlsharp-lib/GetOpt.smi \
+ src/Pathname.smi lib/liburiparser/Uri.smi src/Setting.smi \
+ lib/libcurl/Curl.smi src/Http.smi src/Github.smi src/Detector.smi \
+ src/Message.smi src/Main.smi
 src/Base.o: src/Base.sml src/Base.smi src/Base.smi
-src/Uri.o: src/Uri.sml src/Uri.smi src/Base.smi src/Uri.smi
 src/Pathname.o: src/Pathname.sml src/Pathname.smi src/Base.smi \
  src/Pathname.smi
-src/Github.o: src/Github.sml src/Github.smi src/Base.smi src/Pathname.smi \
- src/Uri.smi src/Curl.smi src/Http.smi src/Github.smi
-src/Curl.o: src/Curl.sml src/Curl.smi src/Base.smi src/Curl.smi
-src/Http.o: src/Http.sml src/Http.smi src/Base.smi src/Uri.smi src/Curl.smi \
- src/Http.smi
-src/Setting.o: src/Setting.sml src/Setting.smi src/Base.smi src/Pathname.smi \
- src/Uri.smi src/Setting.smi
+src/Github.o: src/Github.sml src/Github.smi src/Base.smi \
+ lib/liburiparser/Uri.smi src/Pathname.smi lib/libcurl/Curl.smi src/Http.smi \
+ src/Github.smi
+src/Http.o: src/Http.sml src/Http.smi src/Base.smi lib/liburiparser/Uri.smi \
+ lib/libcurl/Curl.smi src/Http.smi
+src/Setting.o: src/Setting.sml src/Setting.smi src/Base.smi \
+ lib/liburiparser/Uri.smi src/Pathname.smi src/Setting.smi
 src/Detector.o: src/Detector.sml src/Detector.smi src/Base.smi \
  src/Pathname.smi src/Detector.smi
 src/Message.o: src/Message.sml src/Message.smi src/Base.smi src/Pathname.smi \
  src/Message.smi
+src/Json.o: src/Json.sml src/Json.smi src/Base.smi lib/libjansson/Jansson.smi \
+ src/Json.smi
 test/Main.o: test/Main.sml test/Main.smi src/Base.smi test/BaseTest.smi \
- src/Pathname.smi test/PathnameTest.smi src/Uri.smi src/Setting.smi \
- test/SettingTest.smi src/Detector.smi test/DetectorTest.smi test/Main.smi
+ src/Pathname.smi test/PathnameTest.smi lib/liburiparser/Uri.smi \
+ src/Setting.smi test/SettingTest.smi src/Detector.smi test/DetectorTest.smi \
+ lib/libjansson/Jansson.smi test/JanssonTest.smi src/Json.smi \
+ test/JsonTest.smi test/Main.smi
 test/BaseTest.o: test/BaseTest.sml test/BaseTest.smi src/Base.smi \
  test/BaseTest.smi
+test/UriTest.o: test/UriTest.sml test/UriTest.smi src/Base.smi \
+ lib/liburiparser/Uri.smi test/UriTest.smi
 test/PathnameTest.o: test/PathnameTest.sml test/PathnameTest.smi src/Base.smi \
  src/Pathname.smi test/PathnameTest.smi
 test/SettingTest.o: test/SettingTest.sml test/SettingTest.smi src/Base.smi \
- src/Pathname.smi src/Uri.smi src/Setting.smi test/SettingTest.smi
+ src/Pathname.smi lib/liburiparser/Uri.smi src/Setting.smi \
+ test/SettingTest.smi
 test/DetectorTest.o: test/DetectorTest.sml test/DetectorTest.smi src/Base.smi \
  src/Pathname.smi src/Detector.smi test/DetectorTest.smi
+test/JanssonTest.o: test/JanssonTest.sml test/JanssonTest.smi src/Base.smi \
+ lib/libjansson/Jansson.smi test/JanssonTest.smi
+test/JsonTest.o: test/JsonTest.sml test/JsonTest.smi src/Base.smi \
+ lib/libjansson/Jansson.smi src/Json.smi test/JsonTest.smi
 lib/smlsharp-lib/GetOpt.o: lib/smlsharp-lib/GetOpt.sml \
  lib/smlsharp-lib/GetOpt.smi lib/smlsharp-lib/GetOpt.smi
+lib/libcurl/Curl.o: lib/libcurl/Curl.sml lib/libcurl/Curl.smi src/Base.smi \
+ lib/libcurl/Curl.smi
+lib/liburiparser/Uri.o: lib/liburiparser/Uri.sml lib/liburiparser/Uri.smi \
+ src/Base.smi lib/liburiparser/Uri.smi
+lib/libjansson/Jansson.o: lib/libjansson/Jansson.sml \
+ lib/libjansson/Jansson.smi src/Base.smi lib/libjansson/Jansson.smi

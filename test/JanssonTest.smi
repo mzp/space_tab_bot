@@ -2,7 +2,7 @@
 _require "basis.smi"
 _require "smlunit-lib.smi"
 _require "../src/Base.smi"
-_require "../src/Jansson.smi"
+_require "../lib/libjansson/Jansson.smi"
 
 structure JanssonTest =
 struct
