@@ -1,6 +1,5 @@
 _require "basis.smi"
 _require "ffi.smi"
-_require "../../src/Base.smi"
 
 structure Curl = struct
   type t (= ptr)

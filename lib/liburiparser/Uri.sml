@@ -1,9 +1,5 @@
 structure Uri =
 struct
-  local
-    open Base
-  in
-
   type t =
        {                (* EXAMPLE     url *)
          scheme : string,           (* http *)
@@ -38,7 +34,7 @@ struct
         val first = (_import "get_port_first" : () -> int) ()
         val length = (_import "get_port_length" : () -> int) ()
         val port = if length = 0 then NONE
-                   else Int.fromString $ String.substring (uri, first, length)
+                   else (Int.fromString o String.substring) (uri, first, length)
 
         val first = (_import "get_path_first" : () -> int) ()
         val length = (_import "get_path_length" : () -> int) ()
@@ -80,5 +76,4 @@ struct
     in
       scheme ^ userInfo ^ host ^ port ^ path ^ query ^ frag
     end
-  end
 end

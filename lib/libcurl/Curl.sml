@@ -88,7 +88,6 @@ structure Curl = struct
       | optCode0 (CURLOPT_POST) = (LONG, 47)
       | optCode0 (CURLOPT_POSTFIELDSIZE _) = (LONG,60)
     fun optCode opt = op + (optCode0 opt)
-    open Base
   in
     fun easy_setopt curl (opt as CURLOPT_URL s) =
         toCurlCode (curl_easy_set_string_opt (curl, optCode opt, s))
@@ -99,7 +98,7 @@ structure Curl = struct
       | easy_setopt curl (opt as CURLOPT_WRITEFUNCTION f) =
         let
           fun g (ptr, size, nmemb, _) =
-              f $ Pointer.importBytes (ptr, size * nmemb)
+              (f o Pointer.importBytes) (ptr, size * nmemb)
         in
           toCurlCode (curl_easy_set_write_function_opt (curl, optCode opt, g))
         end

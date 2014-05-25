@@ -1,6 +1,4 @@
 structure Jansson = struct
-  open Base
-
   type t = unit ptr
 
   type size_t = int
@@ -124,18 +122,17 @@ structure Jansson = struct
         ()
 
   fun tryEncDec exn f =
-      protectx
-        (error_t_handle ())
-        (fn err =>
-            let
-              val n = f err
-            in
-              if Pointer.isNull n then
-                raise (exn (toErrorInfo err))
-              else
-                n
-            end)
-        free
+      let
+        val err = error_t_handle ()
+        val n = f err
+        val res =
+            if Pointer.isNull n then
+              (free err; raise exn (toErrorInfo err))
+            else
+              n
+      in
+        free err; res
+      end
 
   fun findIndex x ys =
       let
