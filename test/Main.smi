@@ -1,4 +1,5 @@
-_require "basis.smi"
+_require "basis/main/OS.smi"
+_require "smlnj/Basis/IO/text-io.smi"
 _require "smlunit-lib.smi"
 _require "../src/Base.smi"
 _require "./BaseTest.smi"

@@ -1,4 +1,6 @@
-_require "basis.smi"
+_require "basis/main/toplevel.smi"
+_require "basis/main/Word.smi"
+_require "basis/main/List.smi"
 _require "ffi.smi"
 _require "./Base.smi"
 

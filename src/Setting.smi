@@ -1,4 +1,7 @@
-_require "basis.smi"
+_require "smlnj/Basis/IO/text-io.smi"
+_require "basis/main/Option.smi"
+_require "basis/main/List.smi"
+_require "basis/main/toplevel.smi"
 _require "./Base.smi"
 _require "./Pathname.smi"
 _require "./Uri.smi"

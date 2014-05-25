@@ -1,5 +1,8 @@
 (* This file is auto generated. See misc/genTestSmi *)
-_require "basis.smi"
+_require "basis/main/Array.smi"
+_require "basis/main/List.smi"
+_require "basis/main/Option.smi"
+_require "basis/main/toplevel.smi"
 _require "smlunit-lib.smi"
 _require "../src/Base.smi"
 _require "../src/Jansson.smi"

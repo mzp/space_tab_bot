@@ -1,4 +1,8 @@
-_require "basis.smi"
+_require "smlnj/Basis/IO/text-io.smi"
+_require "basis/main/OS.smi"
+_require "basis/main/List.smi"
+_require "basis/main/String.smi"
+_require "basis/main/toplevel.smi"
 _require "./Base.smi"
 
 structure Pathname = struct
