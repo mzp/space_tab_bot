@@ -23,7 +23,7 @@ static points results;
 const char* last(UriPathSegmentA *segment)
 {
 	if (segment->next == NULL) return segment->text.afterLast;
-	else last(segment->next);
+	else return last(segment->next);
 }
 
 void set(points *buff, const UriUriA uri)
