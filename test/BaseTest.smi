@@ -2,7 +2,6 @@
 _require "basis.smi"
 _require "smlunit-lib.smi"
 _require "../src/Base.smi"
-_require "../src/Base.smi"
 
 structure BaseTest =
 struct

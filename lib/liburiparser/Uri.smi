@@ -1,7 +1,6 @@
 _require "basis/main/toplevel.smi"
 _require "basis/main/String.smi"
 _require "basis/main/Int.smi"
-_require "./Base.smi"
 
 structure Uri =
 struct
