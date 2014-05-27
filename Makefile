@@ -56,7 +56,7 @@ lib_objects := $(lib_sources:.sml=.o)
 $(TARGET): $(objects) $(c_objects) $(lib_objects)
 	$(SMLSHARP) $(SMLSHARP_LDFLAGS) -o $@ src/Main.smi $(c_objects)
 
-$(TEST_TARGET): $(objects) $(c_objects) $(test_objects)
+$(TEST_TARGET): $(objects) $(c_objects) $(lib_objects) $(test_objects)
 	$(SMLSHARP) $(SMLSHARP_LDFLAGS) -o $@ test/Main.smi $(c_objects)
 
 # ------------------------------------------------------------
