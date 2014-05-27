@@ -31,7 +31,7 @@ LIB_MODULES = \
 	smlsharp-lib/GetOpt \
 	libcurl/Curl \
 	liburiparser/Uri \
-	libjansson/Jansson \
+	libjansson/Jansson
 
 SMLSHARP = smlsharp
 SMLSHARP_CFLAGS = -O2
