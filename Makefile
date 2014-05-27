@@ -77,7 +77,7 @@ check: $(TEST_TARGET)
 	./$(TEST_TARGET)
 
 clean:
-	rm -rf $(TARGET) src/*.o test/*.o lib/*/*.o
+	rm -rf $(TARGET) $(TEST_TARGET) src/*.o test/*.o lib/*/*.o test_file.tmp
 
 depend:
 	$(SMLSHARP) -MM $(sources) $(test_sources) $(lib_sources) > .depend
