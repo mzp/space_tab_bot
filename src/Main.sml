@@ -23,7 +23,7 @@ fun printHelp () =
       \Options:\n\
       \ -h, --help           show help\n\
       \ -v, --version        show version\n\
-      \ -n, --dry-run        print the issues that would be posted, but do not post tem\n\
+      \ -n, --dry-run        print the issues that would be posted, but don't post them\n\
       \ --config=<filepath>  specify config file path. [default=~/.space_tab_bot]\n"
   in
     print helpMessage
