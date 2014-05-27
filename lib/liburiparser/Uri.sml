@@ -68,8 +68,8 @@ struct
     let
       val scheme = scheme ^ "://"
       val userInfo = case userInfo of SOME s => s ^ "@" | NONE => ""
-      val host = host ^ "/"
-      val port = case port of SOME n => ":" ^ Int.toString n | NONE => ""
+      val host = host
+      val port = case port of SOME n => ":" ^ Int.toString n ^ "/" | NONE => "/"
       val path = case path of SOME s => s | NONE => ""
       val query = case query of SOME s => "?" ^ s | NONE => ""
       val frag = case frag of SOME s => "#" ^ s | NONE => ""

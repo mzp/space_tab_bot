@@ -29,7 +29,7 @@ struct
         frag = SOME "nose"
       }
   val str3 =
-      "http://space:tab@github.com/bot.git?space=yes&tab=yes&both=yes#kill"
+      "http://space:tab@github.com:8080/bot.git?space=yes&tab=yes&both=yes#kill"
   val uri3 =
       {
         scheme = "http",
