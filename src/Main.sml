@@ -24,7 +24,7 @@ fun printHelp () =
       \ -h, --help           show help\n\
       \ -v, --version        show version\n\
       \ -n, --dry-run        print the issues that would be posted, but do not post tem\n\
-      \ --config=<filepath>  specify config file path\n"
+      \ --config=<filepath>  specify config file path. [default=~/.space_tab_bot]\n"
   in
     print helpMessage
   end
