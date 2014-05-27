@@ -29,7 +29,7 @@ fun printHelp () =
     print helpMessage
   end
 
-fun printVersion () = Base.puts "The Space Tab Bot, version 0.1"
+fun printVersion () = puts "The Space Tab Bot, version 0.1"
 
 fun report (url, files) =
   Github.postIssue url $ Message.issues files
@@ -91,5 +91,5 @@ val () =
       end
   end
     handle Error message =>
-      (Base.puts message; OS.Process.exit OS.Process.failure)
+      (puts message; OS.Process.exit OS.Process.failure)
 end
