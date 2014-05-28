@@ -1,4 +1,4 @@
-infix 0 |>
+infix 0 $ |>
 
 structure Base = struct
   exception Undefine
