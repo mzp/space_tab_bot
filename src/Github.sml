@@ -15,7 +15,7 @@ structure Github = struct
       if OS.Process.isSuccess status then
         tmpDir
       else
-        raise (CommandError status)
+        failwith ("command \"" ^ command ^ "\" is failed")
     end
 
   fun word_to_string xs =

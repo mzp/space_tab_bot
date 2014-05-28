@@ -3,8 +3,6 @@ local
   structure GO = GetOpt
 in
 
-exception Error of string
-
 datatype commandLineArgs =
     Help
   | Version
@@ -53,19 +51,19 @@ fun setRunmode (GO.OPTION Help, Main (NONE, _)) = PrintHelp
   | setRunmode (GO.OPTION (ConfigFilePath path), Main (NONE, opt)) = Main (SOME path, opt)
   | setRunmode (GO.OPTION DryRun, Main(path,opt)) = Main (path, opt # { dryRun = true })
   | setRunmode (GO.ARG name, Main (NONE, _)) =
-    raise Error ("invalid input `" ^ name ^ "'")
-  | setRunmode _ = raise Error ("invalid multiple options")
+    failwith ("invalid input `" ^ name ^ "'")
+  | setRunmode _ = failwith ("invalid multiple options")
 
 val () =
   let
     val args = CommandLine.arguments ()
     val commands = GO.getopt options args
         handle GO.NoArg name =>
-               raise Error ("option `" ^ name ^ "' requires an argument")
+               failwith ("option `" ^ name ^ "' requires an argument")
              | GO.HasArg name =>
-               raise Error ("option `" ^ name ^ "' requires no argument")
+               failwith ("option `" ^ name ^ "' requires no argument")
              | GO.Unknown name =>
-               raise Error ("invalid option `" ^ name ^ "'")
+               failwith ("invalid option `" ^ name ^ "'")
     val runmode = foldl setRunmode (Main (NONE, { dryRun = false })) commands
   in
     case runmode of
@@ -75,6 +73,11 @@ val () =
       let
         val configPath =
           Option.getOpt (pathOpt, Pathname.expandPath "~/.space_tab_bot")
+        val () =
+            if OS.FileSys.access (configPath, nil) then ()
+            else failwith
+                   "could not found config file.\n\
+                   \Please specify config file by '--config' opiton"
         val urls =
           Setting.readFromFile $ Pathname.fromPath configPath
         val bannedFiles =
@@ -90,6 +93,6 @@ val () =
         |> List.app (if #dryRun opt then dryRun else report)
       end
   end
-    handle Error message =>
+    handle Failure message =>
       (puts message; OS.Process.exit OS.Process.failure)
 end

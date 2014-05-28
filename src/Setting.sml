@@ -5,6 +5,10 @@ structure Setting = struct
    let
      val line = TextIO.inputLine instream
                 |> Option.map strip
+         handle IO.Io _ =>
+                failwith
+                  "config file is empty.\n\
+                  \Please set URLs of the GitHub repositories"
    in
      case line of
        NONE =>
