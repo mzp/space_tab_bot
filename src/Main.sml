@@ -82,6 +82,11 @@ val () =
       in
         ListPair.zip (urls,bannedFiles)
         |> List.filter (not o List.null o #2)
+        |> List.filter (fn (uri,_) =>
+            Github.issues uri
+            |> List.map #title
+            |> List.exists (fn x => x ="You use tabs and spaces for indent")
+            |> not)
         |> List.app (if #dryRun opt then dryRun else report)
       end
   end

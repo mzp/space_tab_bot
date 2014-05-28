@@ -60,6 +60,11 @@ structure BaseTest = struct
     (Assert.assertTrue $ ([],[]) = span (fn x => x < 4) [];
      Assert.assertTrue $ ([1,2,3],[4,5]) = span (fn x => x < 4) [1,2,3,4,5])
 
+  fun assoc_test () =
+    (Assert.assertTrue $ NONE = assoc 1 [];
+     Assert.assertTrue $ NONE = assoc 1 [(0,"zero"),(42,"ans")];
+     Assert.assertTrue $ SOME "ans" = assoc 42 [(0,"zero"),(42,"ans")])
+
   fun suite _ = Test.labelTests [
     ("id test", id_test),
     ("apply test", apply_test),
@@ -70,6 +75,7 @@ structure BaseTest = struct
     ("strip test", strip_test),
     ("takeWhile test", takeWhile_test),
     ("dropWhile test", dropWhile_test),
-    ("span test", span_test)
+    ("span test", span_test),
+    ("assoc test", assoc_test)
   ]
 end

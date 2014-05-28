@@ -28,4 +28,6 @@ structure Base = struct
   val span : ('a -> bool) -> 'a list -> ('a list * 'a list)
   val takeWhile : ('a -> bool) -> 'a list -> 'a list
   val dropWhile : ('a -> bool) -> 'a list -> 'a list
+
+  val assoc : ''a -> (''a * 'b) list -> 'b option
 end

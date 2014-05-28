@@ -47,4 +47,12 @@ structure Base = struct
     #1 (span p xs)
   fun dropWhile p xs =
     #2 (span p xs)
+
+  fun assoc _ [] =
+       NONE
+    | assoc x ((k,v)::ys) =
+       if x = k then
+         SOME v
+       else
+         assoc x ys
 end

@@ -81,4 +81,26 @@ structure Json = struct
       protectx (toJansson v)
                (flip Jansson.dumps [Jansson.JSON_ENCODE_ANY])
                Jansson.decref
+
+  fun bool True  = SOME true
+    | bool False = SOME false
+    | bool _     = NONE
+
+  fun null Null = SOME ()
+    | null _    = NONE
+
+  fun string (String x) = SOME x
+    | string _          = NONE
+
+  fun integer (Integer n) = SOME n
+    | integer _           = NONE
+
+  fun real_ (Real r) = SOME r
+    | real_ _        = NONE
+
+  fun array (Array xs) = SOME xs
+    | array _          = NONE
+
+  fun object (Object xs) = SOME xs
+    | object _           = NONE
 end
