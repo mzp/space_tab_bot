@@ -20,7 +20,7 @@ struct
     fun open_ (File path)    = TextIO.openIn path
       | open_ (StringIO str) = TextIO.openString str
   in
-    Base.protectx (open_ t) f TextIO.closeIn
+    protectx (open_ t) f TextIO.closeIn
   end
 
   fun listFiles str =
@@ -36,7 +36,7 @@ struct
       | SOME file =>
           loop (OS.Path.joinDirFile {dir=str, file=file} :: xs) dir
   in
-    Base.protectx (OS.FileSys.openDir str) (loop []) OS.FileSys.closeDir
+    protectx (OS.FileSys.openDir str) (loop []) OS.FileSys.closeDir
   end
 
   fun traverse _ _ (StringIO _) = []

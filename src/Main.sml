@@ -3,8 +3,6 @@ local
   structure GO = GetOpt
 in
 
-exception Error of string
-
 datatype commandLineArgs =
     Help
   | Version
@@ -23,13 +21,13 @@ fun printHelp () =
       \Options:\n\
       \ -h, --help           show help\n\
       \ -v, --version        show version\n\
-      \ -n, --dry-run        print the issues that would be posted, but do not post tem\n\
-      \ --config=<filepath>  specify config file path\n"
+      \ -n, --dry-run        print the issues that would be posted, but don't post them\n\
+      \ --config=<filepath>  specify config file path. [default=~/.space_tab_bot]\n"
   in
     print helpMessage
   end
 
-fun printVersion () = Base.puts "The Space Tab Bot, version 0.1"
+fun printVersion () = puts "The Space Tab Bot, version 0.1"
 
 fun report (url, files) =
   Github.postIssue url $ Message.issues files
@@ -53,19 +51,19 @@ fun setRunmode (GO.OPTION Help, Main (NONE, _)) = PrintHelp
   | setRunmode (GO.OPTION (ConfigFilePath path), Main (NONE, opt)) = Main (SOME path, opt)
   | setRunmode (GO.OPTION DryRun, Main(path,opt)) = Main (path, opt # { dryRun = true })
   | setRunmode (GO.ARG name, Main (NONE, _)) =
-    raise Error ("invalid input `" ^ name ^ "'")
-  | setRunmode _ = raise Error ("invalid multiple options")
+    failwith ("invalid input `" ^ name ^ "'")
+  | setRunmode _ = failwith ("invalid multiple options")
 
 val () =
   let
     val args = CommandLine.arguments ()
     val commands = GO.getopt options args
         handle GO.NoArg name =>
-               raise Error ("option `" ^ name ^ "' requires an argument")
+               failwith ("option `" ^ name ^ "' requires an argument")
              | GO.HasArg name =>
-               raise Error ("option `" ^ name ^ "' requires no argument")
+               failwith ("option `" ^ name ^ "' requires no argument")
              | GO.Unknown name =>
-               raise Error ("invalid option `" ^ name ^ "'")
+               failwith ("invalid option `" ^ name ^ "'")
     val runmode = foldl setRunmode (Main (NONE, { dryRun = false })) commands
   in
     case runmode of
@@ -75,6 +73,11 @@ val () =
       let
         val configPath =
           Option.getOpt (pathOpt, Pathname.expandPath "~/.space_tab_bot")
+        val () =
+            if OS.FileSys.access (configPath, nil) then ()
+            else failwith
+                   "could not found config file.\n\
+                   \Please specify config file by '--config' opiton"
         val urls =
           Setting.readFromFile $ Pathname.fromPath configPath
         val bannedFiles =
@@ -90,6 +93,6 @@ val () =
         |> List.app (if #dryRun opt then dryRun else report)
       end
   end
-    handle Error message =>
-      (Base.puts message; OS.Process.exit OS.Process.failure)
+    handle Failure message =>
+      (puts message; OS.Process.exit OS.Process.failure)
 end
