@@ -39,7 +39,8 @@ structure Github = struct
          (SOME username, SOME password) =>
             (username, password)
         | _ =>
-            failwith "could not found github account information.\nPlease set 'GITHUB_USERNAME' and 'GITHUB_PASSWORD'"
+            failwith "could not found github account information.\n\
+                     \Please set 'GITHUB_USERNAME' and 'GITHUB_PASSWORD'"
       val repos =
         repos url
       val apiEntryPoint =
