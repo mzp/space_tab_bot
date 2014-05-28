@@ -4,3 +4,8 @@ _require "basis/main/toplevel.smi"
 _require "smlunit-lib.smi"
 _require "../src/Base.smi"
 _require "../lib/liburiparser/Uri.smi"
+
+structure UriTest =
+struct
+  val suite : unit -> SMLUnit.Test.test
+end
