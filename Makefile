@@ -31,7 +31,7 @@ LIB_MODULES = \
 	smlsharp-lib/GetOpt \
 	libcurl/Curl \
 	liburiparser/Uri \
-	libjansson/Jansson \
+	libjansson/Jansson
 
 SMLSHARP = smlsharp
 SMLSHARP_CFLAGS = -O2
@@ -56,7 +56,7 @@ lib_objects := $(lib_sources:.sml=.o)
 $(TARGET): $(objects) $(c_objects) $(lib_objects)
 	$(SMLSHARP) $(SMLSHARP_LDFLAGS) -o $@ src/Main.smi $(c_objects)
 
-$(TEST_TARGET): $(objects) $(c_objects) $(test_objects)
+$(TEST_TARGET): $(objects) $(c_objects) $(lib_objects) $(test_objects)
 	$(SMLSHARP) $(SMLSHARP_LDFLAGS) -o $@ test/Main.smi $(c_objects)
 
 # ------------------------------------------------------------
@@ -77,7 +77,7 @@ check: $(TEST_TARGET)
 	./$(TEST_TARGET)
 
 clean:
-	rm -rf $(TARGET) src/*.o test/*.o lib/*/*.o
+	rm -rf $(TARGET) $(TEST_TARGET) src/*.o test/*.o lib/*/*.o test_file.tmp
 
 depend:
 	$(SMLSHARP) -MM $(sources) $(test_sources) $(lib_sources) > .depend
