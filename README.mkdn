@@ -21,6 +21,12 @@ This is Github bot to detect file containing spaces and tabs, and send issue.
     # Run unit test
     $ make check
 
+## How to use from docker
+
+    $ cd misc/dockerfile
+    $ docker build -t space_tab_bot .
+    $ docker run space_tab_bot ./space_tab_bot/space_tab_bot --config /root/.space_tab_bot
+
 ## Usage
 
 Write Github URL at `~/.space_tab_bot` like below:
