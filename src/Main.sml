@@ -99,5 +99,5 @@ val () =
       end
   end
     handle Failure message =>
-      (puts message; OS.Process.exit OS.Process.failure)
+      (puts ("Error: " ^ message); OS.Process.exit OS.Process.failure)
 end
