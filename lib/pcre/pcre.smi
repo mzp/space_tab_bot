@@ -1,0 +1,163 @@
+_require "basis.smi"
+_require "ffi.smi"
+
+structure Pcre = struct
+  type t = unit ptr
+
+  type match_result (= boxed)
+
+  type iopt (= word)
+
+  type 'a compile_option =
+       {ANCHORED: unit -> 'a,
+        AUTO_CALLOUT: unit -> 'a,
+        BSR_ANYCRLF: unit -> 'a,
+        BSR_UNICODE: unit -> 'a,
+        CASELESS: unit -> 'a,
+        DOLLAR_ENDONLY: unit -> 'a,
+        DOTALL: unit -> 'a,
+        DUPNAMES: unit -> 'a,
+        EXTENDED: unit -> 'a,
+        EXTRA: unit -> 'a,
+        FIRSTLINE: unit -> 'a,
+        JAVASCRIPT_COMPAT: unit -> 'a,
+        MULTILINE: unit -> 'a,
+        NEVER_UTF: unit -> 'a,
+        NEWLINE_ANY: unit -> 'a,
+        NEWLINE_ANYCRLF: unit -> 'a,
+        NEWLINE_CR: unit -> 'a,
+        NEWLINE_CRLF: unit -> 'a,
+        NEWLINE_LF: unit -> 'a,
+        NO_AUTO_CAPTURE: unit -> 'a,
+        NO_AUTO_POSSESS: unit -> 'a,
+        NO_START_OPTIMISE: unit -> 'a,
+        NO_START_OPTIMIZE: unit -> 'a,
+        NO_UTF16_CHECK: unit -> 'a,
+        NO_UTF32_CHECK: unit -> 'a,
+        NO_UTF8_CHECK: unit -> 'a,
+        UCP: unit -> 'a,
+        UNGREEDY: unit -> 'a,
+        UTF16: unit -> 'a,
+        UTF32: unit -> 'a,
+        UTF8: unit -> 'a} -> 'a
+
+  type 'a dfa_exec_option =
+       {ANCHORED: unit -> 'a,
+        BSR_ANYCRLF: unit -> 'a,
+        BSR_UNICODE: unit -> 'a,
+        DFA_RESTART: unit -> 'a,
+        DFA_SHORTEST: unit -> 'a,
+        NEWLINE_ANY: unit -> 'a,
+        NEWLINE_ANYCRLF: unit -> 'a,
+        NEWLINE_CR: unit -> 'a,
+        NEWLINE_CRLF: unit -> 'a,
+        NEWLINE_LF: unit -> 'a,
+        NOTBOL: unit -> 'a,
+        NOTEMPTY: unit -> 'a,
+        NOTEMPTY_ATSTART: unit -> 'a,
+        NOTEOL: unit -> 'a,
+        NO_START_OPTIMISE: unit -> 'a,
+        NO_START_OPTIMIZE: unit -> 'a,
+        NO_UTF16_CHECK: unit -> 'a,
+        NO_UTF32_CHECK: unit -> 'a,
+        NO_UTF8_CHECK: unit -> 'a,
+        PARTIAL: unit -> 'a,
+        PARTIAL_HARD: unit -> 'a,
+        PARTIAL_SOFT: unit -> 'a} -> 'a
+
+  type 'a exec_option =
+       {ANCHORED: unit -> 'a,
+        BSR_ANYCRLF: unit -> 'a,
+        BSR_UNICODE: unit -> 'a,
+        NEWLINE_ANY: unit -> 'a,
+        NEWLINE_ANYCRLF: unit -> 'a,
+        NEWLINE_CR: unit -> 'a,
+        NEWLINE_CRLF: unit -> 'a,
+        NEWLINE_LF: unit -> 'a,
+        NOTBOL: unit -> 'a,
+        NOTEMPTY: unit -> 'a,
+        NOTEMPTY_ATSTART: unit -> 'a,
+        NOTEOL: unit -> 'a,
+        NO_START_OPTIMISE: unit -> 'a,
+        NO_START_OPTIMIZE: unit -> 'a,
+        NO_UTF16_CHECK: unit -> 'a,
+        NO_UTF32_CHECK: unit -> 'a,
+        NO_UTF8_CHECK: unit -> 'a,
+        PARTIAL: unit -> 'a,
+        PARTIAL_HARD: unit -> 'a,
+        PARTIAL_SOFT: unit -> 'a} -> 'a
+
+  type 'a jit_exec_option =
+       {NOTBOL: unit -> 'a,
+        NOTEMPTY: unit -> 'a,
+        NOTEMPTY_ATSTART: unit -> 'a,
+        NOTEOL: unit -> 'a,
+        NO_UTF16_CHECK: unit -> 'a,
+        NO_UTF32_CHECK: unit -> 'a,
+        NO_UTF8_CHECK: unit -> 'a,
+        PARTIAL: unit -> 'a,
+        PARTIAL_HARD: unit -> 'a,
+        PARTIAL_SOFT: unit -> 'a} -> 'a
+
+  val ANCHORED : ['a#{ANCHORED: unit -> 'b}, 'b. 'a -> 'b]
+  val AUTO_CALLOUT : ['a#{AUTO_CALLOUT: unit -> 'b}, 'b. 'a -> 'b]
+  val BSR_ANYCRLF : ['a#{BSR_ANYCRLF: unit -> 'b}, 'b. 'a -> 'b]
+  val BSR_UNICODE : ['a#{BSR_UNICODE: unit -> 'b}, 'b. 'a -> 'b]
+  val CASELESS : ['a#{CASELESS: unit -> 'b}, 'b. 'a -> 'b]
+  val DFA_RESTART : ['a#{DFA_RESTART: unit -> 'b}, 'b. 'a -> 'b]
+  val DFA_SHORTEST : ['a#{DFA_SHORTEST: unit -> 'b}, 'b. 'a -> 'b]
+  val DOLLAR_ENDONLY : ['a#{DOLLAR_ENDONLY: unit -> 'b}, 'b. 'a -> 'b]
+  val DOTALL : ['a#{DOTALL: unit -> 'b}, 'b. 'a -> 'b]
+  val DUPNAMES : ['a#{DUPNAMES: unit -> 'b}, 'b. 'a -> 'b]
+  val EXTENDED : ['a#{EXTENDED: unit -> 'b}, 'b. 'a -> 'b]
+  val EXTRA : ['a#{EXTRA: unit -> 'b}, 'b. 'a -> 'b]
+  val FIRSTLINE : ['a#{FIRSTLINE: unit -> 'b}, 'b. 'a -> 'b]
+  val JAVASCRIPT_COMPAT : ['a#{JAVASCRIPT_COMPAT: unit -> 'b}, 'b. 'a -> 'b]
+  val MULTILINE : ['a#{MULTILINE: unit -> 'b}, 'b. 'a -> 'b]
+  val NEVER_UTF : ['a#{NEVER_UTF: unit -> 'b}, 'b. 'a -> 'b]
+  val NEWLINE_ANY : ['a#{NEWLINE_ANY: unit -> 'b}, 'b. 'a -> 'b]
+  val NEWLINE_ANYCRLF : ['a#{NEWLINE_ANYCRLF: unit -> 'b}, 'b. 'a -> 'b]
+  val NEWLINE_CR : ['a#{NEWLINE_CR: unit -> 'b}, 'b. 'a -> 'b]
+  val NEWLINE_CRLF : ['a#{NEWLINE_CRLF: unit -> 'b}, 'b. 'a -> 'b]
+  val NEWLINE_LF : ['a#{NEWLINE_LF: unit -> 'b}, 'b. 'a -> 'b]
+  val NOTBOL : ['a#{NOTBOL: unit -> 'b}, 'b. 'a -> 'b]
+  val NOTEMPTY : ['a#{NOTEMPTY: unit -> 'b}, 'b. 'a -> 'b]
+  val NOTEMPTY_ATSTART : ['a#{NOTEMPTY_ATSTART: unit -> 'b}, 'b. 'a -> 'b]
+  val NOTEOL : ['a#{NOTEOL: unit -> 'b}, 'b. 'a -> 'b]
+  val NO_AUTO_CAPTURE : ['a#{NO_AUTO_CAPTURE: unit -> 'b}, 'b. 'a -> 'b]
+  val NO_AUTO_POSSESS : ['a#{NO_AUTO_POSSESS: unit -> 'b}, 'b. 'a -> 'b]
+  val NO_START_OPTIMISE : ['a#{NO_START_OPTIMISE: unit -> 'b}, 'b. 'a -> 'b]
+  val NO_START_OPTIMIZE : ['a#{NO_START_OPTIMIZE: unit -> 'b}, 'b. 'a -> 'b]
+  val NO_UTF16_CHECK : ['a#{NO_UTF16_CHECK: unit -> 'b}, 'b. 'a -> 'b]
+  val NO_UTF32_CHECK : ['a#{NO_UTF32_CHECK: unit -> 'b}, 'b. 'a -> 'b]
+  val NO_UTF8_CHECK : ['a#{NO_UTF8_CHECK: unit -> 'b}, 'b. 'a -> 'b]
+  val PARTIAL : ['a#{PARTIAL: unit -> 'b}, 'b. 'a -> 'b]
+  val PARTIAL_HARD : ['a#{PARTIAL_HARD: unit -> 'b}, 'b. 'a -> 'b]
+  val PARTIAL_SOFT : ['a#{PARTIAL_SOFT: unit -> 'b}, 'b. 'a -> 'b]
+  val UCP : ['a#{UCP: unit -> 'b}, 'b. 'a -> 'b]
+  val UNGREEDY : ['a#{UNGREEDY: unit -> 'b}, 'b. 'a -> 'b]
+  val UTF16 : ['a#{UTF16: unit -> 'b}, 'b. 'a -> 'b]
+  val UTF32 : ['a#{UTF32: unit -> 'b}, 'b. 'a -> 'b]
+  val UTF8 : ['a#{UTF8: unit -> 'b}, 'b. 'a -> 'b]
+
+  val compile : string -> iopt compile_option list -> t
+  val exec_from_pos :
+      t -> string -> int -> iopt exec_option list -> match_result option
+  val exec : t -> string -> iopt exec_option list -> match_result option
+  val free : t -> unit
+
+  val get_stringnumber : t -> string -> int option
+
+  (* Utils *)
+  val match_start : match_result -> int -> int option
+  val match_end : match_result -> int -> int option
+  val substring : match_result -> int -> string option
+  val match_before : match_result -> int -> string option
+  val match_after : match_result -> int -> string option
+
+  val named_match_start : match_result -> string -> int option
+  val named_match_end : match_result -> string -> int option
+  val named_substring : match_result -> string -> string option
+  val named_match_before : match_result -> string -> string option
+  val named_match_after : match_result -> string -> string option
+end
