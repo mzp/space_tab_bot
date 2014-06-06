@@ -12,7 +12,7 @@ datatype commandLineArgs =
 datatype runmode =
     PrintHelp
   | PrintVersion
-  | Main of string option * { dryRun : bool }
+  | Main of {config : string option, dry : bool}
 
 fun printHelp () =
   let
@@ -46,13 +46,16 @@ val options =
     GO.DLONG ("config", GO.REQUIRED ConfigFilePath)
   ]
 
-fun setRunmode (GO.OPTION Help, Main (NONE, _)) = PrintHelp
-  | setRunmode (GO.OPTION Version, Main (NONE, _)) = PrintVersion
-  | setRunmode (GO.OPTION (ConfigFilePath path), Main (NONE, opt)) = Main (SOME path, opt)
-  | setRunmode (GO.OPTION DryRun, Main(path,opt)) = Main (path, opt # { dryRun = true })
-  | setRunmode (GO.ARG name, Main (NONE, _)) =
-    failwith ("invalid input `" ^ name ^ "'")
-  | setRunmode _ = failwith ("invalid multiple options")
+fun setRunmode (command, Main (mode as {config, dry})) =
+    (case (command, config) of
+         (GO.OPTION Help, NONE) => PrintHelp
+       | (GO.OPTION Version, NONE) => PrintVersion
+       | (GO.OPTION (ConfigFilePath path), NONE)
+         => Main (mode # {config = SOME path})
+       | (GO.OPTION DryRun, _) => Main (mode # {dry = true})
+       | (GO.ARG name, NONE) => failwith ("invalid input `" ^ name ^ "'")
+       | _ => failwith "invalid multiple options")
+  | setRunmode _ = failwith "invalid multiple options"
 
 val () =
   let
@@ -64,15 +67,17 @@ val () =
                failwith ("option `" ^ name ^ "' requires no argument")
              | GO.Unknown name =>
                failwith ("invalid option `" ^ name ^ "'")
-    val runmode = foldl setRunmode (Main (NONE, { dryRun = false })) commands
+    val runmode = Main {config = NONE, dry = false} (* default *)
+    val runmode =
+        foldl setRunmode runmode commands
   in
     case runmode of
       PrintHelp => printHelp ()
     | PrintVersion => printVersion ()
-    | Main (pathOpt, opt) =>
+    | Main {config, dry} =>
       let
         val configPath =
-          Option.getOpt (pathOpt, Pathname.expandPath "~/.space_tab_bot")
+          Option.getOpt (config, Pathname.expandPath "~/.space_tab_bot")
         val () =
             if OS.FileSys.access (configPath, nil) then ()
             else failwith
@@ -90,9 +95,9 @@ val () =
             |> List.map #title
             |> List.exists (fn x => x ="You use tabs and spaces for indent")
             |> not)
-        |> List.app (if #dryRun opt then dryRun else report)
+        |> List.app (if dry then dryRun else report)
       end
   end
     handle Failure message =>
-      (puts message; OS.Process.exit OS.Process.failure)
+      (puts ("Error: " ^ message); OS.Process.exit OS.Process.failure)
 end
