@@ -20,10 +20,17 @@ typedef struct {
 
 static points results;
 
-const char* last(UriPathSegmentA *segment)
+static int last(UriPathSegmentA *segment)
 {
-	if (segment->next == NULL) return segment->text.afterLast;
-	else return last(segment->next);
+	int count = -1;
+	while(segment != NULL)
+	{
+		// Increment by the length of this segment.
+		// Because a between of each segment has one length, we need add one.
+		count += (segment->text.afterLast - segment->text.first) + 1;
+		segment = segment->next;
+	}
+	return count;
 }
 
 void set(points *buff, const UriUriA uri)
@@ -64,7 +71,7 @@ void set(points *buff, const UriUriA uri)
 	} else {
 		buff->path_first = uri.pathHead->text.first - offset;
 		buff->path_length =
-			last(uri.pathHead) - uri.pathHead->text.first;
+			last(uri.pathHead);
 	}
 	/* query */
 	if (uri.query.first == NULL){
