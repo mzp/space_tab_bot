@@ -80,6 +80,18 @@ structure PathnameTest = struct
     ; Assert.assertTrue  $ Pathname.fnmatch "*.c"   $ Pathname.fromPath "foo.c"
     ; Assert.assertFalse $ Pathname.fnmatch "*.c"   $ Pathname.fromPath "foo.cpp")
 
+  fun mkDirPTest () =
+  let
+    val tmpDir =
+      Pathname.tmpDir ()
+      |> Pathname.toString
+      |> (fn s => s ^ "/foo/bar/baz")
+    val () =
+      Pathname.mkDirP (Pathname.fromPath tmpDir)
+  in
+    Assert.assertTrue (OS.FileSys.isDir tmpDir)
+  end
+
   fun suite _ = Test.labelTests [
     ("fromString", fromStringTest),
     ("fromPath"  , fromPathTest),
@@ -88,6 +100,7 @@ structure PathnameTest = struct
     ("expandPath(home) test", expandPath_home_test),
     ("expandPath(cwd) test", expandPath_cwd_test),
     ("mapTest test", map_test),
-    ("fnmatch test", fnmatch_test)
+    ("fnmatch test", fnmatch_test),
+    ("mkdir -p test", mkDirPTest)
   ]
 end

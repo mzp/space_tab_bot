@@ -5,15 +5,28 @@ structure Github = struct
 
   fun clone uri =
     let
-      val tmpDir =
-        Pathname.tmpDir ()
+      fun isDir s =
+        OS.FileSys.isDir s handle OS.SysErr _ => false
+      val reposPath =
+        case #path uri of
+          SOME(path) =>
+            Pathname.fromPath ("./github_repos/" ^ path)
+        | NONE =>
+            failwith "invalid url"
+      val () =
+        Pathname.mkDirP reposPath
       val command =
-        "git clone " ^ Uri.toString uri ^ " " ^ Pathname.toString tmpDir
+        if isDir (Pathname.toString reposPath ^ "/.git") then
+          "git pull"
+        else
+          "git clone " ^ Uri.toString uri ^ " ."
       val status =
-        OS.Process.system command
+        Pathname.chdir
+          (fn _ => OS.Process.system command)
+          (Pathname.toString reposPath)
     in
       if OS.Process.isSuccess status then
-        tmpDir
+        reposPath
       else
         failwith ("command \"" ^ command ^ "\" is failed")
     end

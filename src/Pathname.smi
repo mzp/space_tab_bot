@@ -25,4 +25,7 @@ structure Pathname = struct
   val chdir : (t -> 'a) -> string -> 'a
 
   val fnmatch : string -> t -> bool
+
+  val mkDirP : t -> unit
+
 end

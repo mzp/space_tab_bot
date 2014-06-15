@@ -100,4 +100,25 @@ struct
 
   fun fnmatch pat path =
     0 = prim_fnmatch (pat, toString path, 0)
+
+  fun mkDirP path =
+  let
+    fun isDir s =
+      OS.FileSys.isDir s handle OS.SysErr _ => false
+    fun iter s =
+      if isDir s then
+        ()
+      else
+        let
+          val dir =
+            OS.Path.dir s
+        in
+          if dir = s then
+            ()
+          else
+            (iter dir; OS.FileSys.mkDir s handle OS.SysErr _ => ())
+        end
+  in
+   iter (toString path)
+  end
 end
