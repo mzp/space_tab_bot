@@ -4,7 +4,7 @@ structure Detector = struct
   val ignoreDirectories =
     ["*/.git"]
   val ignoreFiles =
-    ["*.png"]
+    ["*.png", "*.exe"]
 
   fun isTab str =
     String.isSubstring "\t" str
