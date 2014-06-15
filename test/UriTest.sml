@@ -78,7 +78,7 @@ struct
       val path =
         Option.valOf (#path uri)
     in
-      Assert.assertEqualString "the/qucik/brown/fox/jumps/over/the/lazy/dog/" path
+      Assert.assertEqualString "the/quick/brown/fox/jumps/over/the/lazy/dog/" path
     end
 
   fun suite _ = Test.labelTests
