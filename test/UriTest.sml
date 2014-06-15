@@ -63,11 +63,30 @@ struct
        Assert.assertEqualString str3 (toString $ Uri.fromString str3))
     end
 
+  (* liburiparser uses multi segment data structure to store path.
+   * Though multi segment data structure (maybe) like a signle linked list,
+   * our implementation could only treat single segment.
+   *
+   * So, when Uri.fromString receive some long path(or ended with "/"?), it
+   * crash!
+   * *)
+  fun bug_multi_segment () =
+    let
+      val uri =
+        Uri.fromString "https://example.com/the/quick/brown/fox/jumps/over/the/lazy/dog/"
+        |> Option.valOf
+      val path =
+        Option.valOf (#path uri)
+    in
+      Assert.assertEqualString "the/qucik/brown/fox/jumps/over/the/lazy/dog/" path
+    end
+
   fun suite _ = Test.labelTests
     [
       ("toString test", toString_test),
       ("fromString test", fromString_test),
-      ("toFrom test", toFrom_test)
+      ("toFrom test", toFrom_test),
+      ("bug:multi segment", bug_multi_segment)
     ]
   end
 end
