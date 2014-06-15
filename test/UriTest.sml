@@ -74,9 +74,9 @@ struct
     let
       val uri =
         Uri.fromString "https://example.com/the/quick/brown/fox/jumps/over/the/lazy/dog/"
-        |> Option.valOf
+        |> valOf
       val path =
-        Option.valOf (#path uri)
+        valOf (#path uri)
     in
       Assert.assertEqualString "the/quick/brown/fox/jumps/over/the/lazy/dog/" path
     end
